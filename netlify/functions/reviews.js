@@ -1,69 +1,90 @@
 /**
  * Netlify Function: /.netlify/functions/reviews
  *
- * Fetches Detailing Co.'s rating + reviews from Google Places API.
- * Caches the response for 6 hours via Cache-Control so you don't
- * burn through API quota on every page load.
+ * Fetches Detailing Co.'s rating + reviews via Outscraper API.
+ * No Google billing required — Outscraper handles it.
+ * Cached for 6 hours to preserve free tier quota.
  *
- * Environment variables required (set in Netlify dashboard):
- *   GOOGLE_PLACES_API_KEY  — your Google Cloud Places API key
+ * Environment variable required (set in Netlify dashboard):
+ *   OUTSCRAPER_API_KEY  — from https://app.outscraper.com/api-key
  *
- * Place ID for Detailing Co. (Sheikh Zayed):
- *   ChIJkdJYBOlbhRQR2cmDs23g4PA=  (resolved from Maps URL)
+ * Place ID: ChIJkdJYB0lbWBQRGckDhxvgDvA (Detailing Co., Galleria40)
  */
 
-const PLACE_ID   = 'ChIJkdJYB0lbWBQRGckDhxvgDvA'; // Detailing Co., Galleria40, Sheikh Zayed
-const FIELDS     = 'name,rating,user_ratings_total,reviews';
-const LANG       = 'en';
-const CACHE_SECS = 60 * 60 * 6; // 6 hours
+const PLACE_ID      = 'ChIJkdJYB0lbWBQRGckDhxvgDvA';
+const CACHE_SECS    = 60 * 60 * 6; // 6 hours
+const REVIEWS_LIMIT = 5;
 
 exports.handler = async function (event, context) {
-  const apiKey = process.env.GOOGLE_PLACES_API_KEY;
+  const apiKey = process.env.OUTSCRAPER_API_KEY;
 
   if (!apiKey) {
     return {
       statusCode: 500,
-      body: JSON.stringify({ error: 'GOOGLE_PLACES_API_KEY not set' }),
+      body: JSON.stringify({ error: 'OUTSCRAPER_API_KEY not set' }),
     };
   }
 
   const url =
-    `https://maps.googleapis.com/maps/api/place/details/json` +
-    `?place_id=${PLACE_ID}` +
-    `&fields=${FIELDS}` +
-    `&language=${LANG}` +
-    `&key=${apiKey}`;
+    `https://api.app.outscraper.com/maps/reviews-v3` +
+    `?query=${encodeURIComponent(PLACE_ID)}` +
+    `&reviewsLimit=${REVIEWS_LIMIT}` +
+    `&language=en` +
+    `&async=false`;
 
   try {
-    const response = await fetch(url);
-    const json     = await response.json();
+    const response = await fetch(url, {
+      headers: { 'X-API-KEY': apiKey },
+    });
 
-    if (json.status !== 'OK') {
-      console.error('Places API error:', json.status, json.error_message);
+    if (!response.ok) {
+      const text = await response.text();
+      console.error('Outscraper error:', response.status, text);
       return {
         statusCode: 502,
-        body: JSON.stringify({ error: json.status, detail: json.error_message }),
+        body: JSON.stringify({ error: 'Outscraper API error', detail: text }),
       };
     }
 
-    const { name, rating, user_ratings_total, reviews } = json.result;
+    const json = await response.json();
 
-    // Sort reviews by most recent first, filter to 5-star only if enough exist
-    const sorted = (reviews ?? []).sort((a, b) => b.time - a.time);
+    // Outscraper returns data[0][0] for a single place query
+    const place = json?.data?.[0]?.[0];
+
+    if (!place) {
+      console.error('No place data:', JSON.stringify(json));
+      return {
+        statusCode: 404,
+        body: JSON.stringify({ error: 'Place not found' }),
+      };
+    }
+
+    // Normalize to the same shape the frontend already expects
+    const reviews = (place.reviews_data ?? [])
+      .map(r => ({
+        author_name: r.author_title,
+        rating: r.review_rating,
+        text: r.review_text,
+        relative_time_description: r.review_datetime_utc
+          ? timeAgo(new Date(r.review_datetime_utc))
+          : 'recently',
+        profile_photo_url: r.author_image ?? null,
+        time: new Date(r.review_datetime_utc ?? 0).getTime(),
+      }))
+      .sort((a, b) => b.time - a.time);
 
     return {
       statusCode: 200,
       headers: {
         'Content-Type': 'application/json',
-        // CDN + browser cache for 6 hours, stale-while-revalidate for 1 extra hour
         'Cache-Control': `public, max-age=${CACHE_SECS}, stale-while-revalidate=3600`,
         'Access-Control-Allow-Origin': '*',
       },
       body: JSON.stringify({
-        name,
-        rating,
-        user_ratings_total,
-        reviews: sorted,
+        name: place.name,
+        rating: place.rating,
+        user_ratings_total: place.reviews,
+        reviews,
       }),
     };
 
@@ -75,3 +96,14 @@ exports.handler = async function (event, context) {
     };
   }
 };
+
+// Human-readable relative time
+function timeAgo(date) {
+  const s = Math.floor((Date.now() - date.getTime()) / 1000);
+  if (s < 60)       return 'just now';
+  if (s < 3600)     return `${Math.floor(s / 60)} minutes ago`;
+  if (s < 86400)    return `${Math.floor(s / 3600)} hours ago`;
+  if (s < 2592000)  return `${Math.floor(s / 86400)} days ago`;
+  if (s < 31536000) return `${Math.floor(s / 2592000)} months ago`;
+  return `${Math.floor(s / 31536000)} years ago`;
+}
