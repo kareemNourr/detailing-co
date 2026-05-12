@@ -1,0 +1,1443 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Detailing Co. — Premium Car Care, Sheikh Zayed</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400&display=swap" rel="stylesheet"/>
+<style>
+/* ── RESET & BASE ─────────────────────────────────── */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;font-size:16px}
+body{
+  background:#0a0a0a;
+  color:#e8e4dc;
+  font-family:'DM Sans',sans-serif;
+  font-weight:300;
+  line-height:1.65;
+  overflow-x:hidden;
+  cursor:none;
+}
+a{color:inherit;text-decoration:none}
+img{display:block;max-width:100%}
+button{font-family:inherit;cursor:none;border:none;background:none}
+
+/* ── CSS VARIABLES ───────────────────────────────── */
+:root{
+  --gold:#c9a96e;
+  --gold-light:#e2c898;
+  --gold-dim:#7a6040;
+  --carbon:#141414;
+  --carbon-2:#1c1c1c;
+  --carbon-3:#242424;
+  --carbon-4:#2e2e2e;
+  --text-primary:#e8e4dc;
+  --text-secondary:#8a8680;
+  --text-muted:#4a4844;
+  --border:#2a2826;
+  --border-gold:rgba(201,169,110,0.2);
+  --radius:2px;
+  --transition:0.4s cubic-bezier(0.25,0.1,0.25,1);
+}
+
+/* ── CUSTOM CURSOR ───────────────────────────────── */
+#cursor{
+  position:fixed;width:10px;height:10px;
+  background:var(--gold);border-radius:50%;
+  pointer-events:none;z-index:9999;
+  transform:translate(-50%,-50%);
+  transition:transform 0.15s ease, width 0.3s ease, height 0.3s ease, background 0.3s ease;
+  mix-blend-mode:normal;
+}
+#cursor-ring{
+  position:fixed;width:36px;height:36px;
+  border:1px solid rgba(201,169,110,0.4);
+  border-radius:50%;pointer-events:none;z-index:9998;
+  transform:translate(-50%,-50%);
+  transition:transform 0.35s cubic-bezier(0.25,0.1,0.25,1), width 0.3s ease, height 0.3s ease, opacity 0.3s ease;
+}
+body.hovering #cursor{width:6px;height:6px;background:var(--gold-light)}
+body.hovering #cursor-ring{width:50px;height:50px;opacity:0.6}
+
+/* ── NOISE TEXTURE OVERLAY ───────────────────────── */
+body::before{
+  content:'';
+  position:fixed;inset:0;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+  opacity:0.028;
+  pointer-events:none;z-index:0;
+}
+
+/* ── NAV ─────────────────────────────────────────── */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:24px 48px;
+  transition:background var(--transition), padding var(--transition), border-color var(--transition);
+  border-bottom:1px solid transparent;
+}
+nav.scrolled{
+  background:rgba(10,10,10,0.92);
+  backdrop-filter:blur(20px);
+  padding:16px 48px;
+  border-bottom-color:var(--border);
+}
+.nav-logo{
+  font-family:'Cormorant Garamond',serif;
+  font-size:22px;font-weight:300;letter-spacing:0.12em;
+  text-transform:uppercase;color:var(--text-primary);
+}
+.nav-logo span{color:var(--gold)}
+.nav-links{display:flex;gap:36px;align-items:center}
+.nav-links a{
+  font-size:11px;letter-spacing:0.18em;text-transform:uppercase;
+  color:var(--text-secondary);
+  transition:color var(--transition);
+  font-weight:400;
+}
+.nav-links a:hover{color:var(--text-primary)}
+.nav-cta{
+  background:var(--gold);color:#0a0a0a;
+  padding:10px 24px;font-size:11px;letter-spacing:0.14em;
+  text-transform:uppercase;font-weight:500;
+  border-radius:var(--radius);
+  transition:background var(--transition), transform 0.2s ease;
+  display:inline-block;
+}
+.nav-cta:hover{background:var(--gold-light);transform:translateY(-1px)}
+
+/* ── HERO ────────────────────────────────────────── */
+#hero{
+  position:relative;height:100vh;min-height:700px;
+  display:flex;align-items:flex-end;
+  padding:0 48px 80px;
+  overflow:hidden;
+}
+.hero-bg{
+  position:absolute;inset:0;
+  background:#0a0a0a;
+  overflow:hidden;
+}
+/* ── VIDEO ── */
+#hero-video{
+  position:absolute;inset:0;
+  width:100%;height:100%;
+  object-fit:cover;
+  object-position:center center;
+  opacity:0;
+  transition:opacity 1.2s ease;
+  filter:brightness(0.45) saturate(0.8);
+}
+#hero-video.loaded{opacity:1}
+/* bottom gradient to bleed into next section */
+.hero-overlay{
+  position:absolute;inset:0;
+  background:
+    linear-gradient(to top,  #0a0a0a 0%,  rgba(10,10,10,0.2) 40%, transparent 70%),
+    linear-gradient(to right, rgba(10,10,10,0.55) 0%, transparent 60%);
+}
+/* subtle top vignette */
+.hero-overlay-top{
+  position:absolute;inset:0;
+  background:linear-gradient(to bottom, rgba(10,10,10,0.4) 0%, transparent 25%);
+}
+/* ── MUTE BUTTON ── */
+.hero-mute{
+  position:absolute;bottom:36px;left:48px;z-index:3;
+  display:flex;align-items:center;gap:8px;
+  font-size:10px;letter-spacing:0.18em;text-transform:uppercase;
+  color:rgba(232,228,220,0.45);
+  padding:8px 14px;
+  border:1px solid rgba(232,228,220,0.12);
+  border-radius:1px;
+  background:rgba(10,10,10,0.35);
+  backdrop-filter:blur(8px);
+  transition:color 0.3s ease, border-color 0.3s ease;
+  cursor:none;
+}
+.hero-mute:hover{color:rgba(232,228,220,0.8);border-color:rgba(232,228,220,0.25)}
+#mute-label{line-height:1}
+
+.hero-content{position:relative;z-index:2;max-width:680px}
+.hero-eyebrow{
+  font-size:10px;letter-spacing:0.3em;text-transform:uppercase;
+  color:var(--gold);margin-bottom:24px;
+  display:flex;align-items:center;gap:14px;
+  opacity:0;animation:fadeUp 1s 0.3s ease forwards;
+}
+.hero-eyebrow::before{content:'';width:32px;height:1px;background:var(--gold)}
+.hero-h1{
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(52px,7vw,96px);
+  font-weight:300;line-height:1.0;
+  letter-spacing:-0.02em;
+  margin-bottom:28px;
+  opacity:0;animation:fadeUp 1s 0.5s ease forwards;
+}
+.hero-h1 em{font-style:italic;color:var(--gold)}
+.hero-sub{
+  font-size:15px;color:var(--text-secondary);
+  max-width:420px;line-height:1.75;
+  margin-bottom:44px;
+  opacity:0;animation:fadeUp 1s 0.7s ease forwards;
+}
+.hero-actions{
+  display:flex;gap:16px;align-items:center;
+  opacity:0;animation:fadeUp 1s 0.9s ease forwards;
+}
+.btn-primary{
+  background:var(--gold);color:#0a0a0a;
+  padding:15px 36px;font-size:12px;letter-spacing:0.15em;
+  text-transform:uppercase;font-weight:500;
+  border-radius:var(--radius);
+  transition:background 0.3s ease,transform 0.2s ease;
+  display:inline-flex;align-items:center;gap:10px;
+}
+.btn-primary:hover{background:var(--gold-light);transform:translateY(-2px)}
+.btn-primary svg{transition:transform 0.3s ease}
+.btn-primary:hover svg{transform:translateX(4px)}
+.btn-ghost{
+  font-size:12px;letter-spacing:0.15em;text-transform:uppercase;
+  color:var(--text-secondary);
+  display:inline-flex;align-items:center;gap:8px;
+  transition:color 0.3s ease;
+  padding:15px 0;
+  border-bottom:1px solid transparent;
+}
+.btn-ghost:hover{color:var(--text-primary)}
+.hero-stats{
+  position:absolute;bottom:80px;right:48px;z-index:2;
+  display:flex;gap:48px;
+  opacity:0;animation:fadeUp 1s 1.1s ease forwards;
+}
+.stat-item{text-align:right}
+.stat-num{
+  font-family:'Cormorant Garamond',serif;
+  font-size:36px;font-weight:300;color:var(--gold);
+  line-height:1;
+}
+.stat-label{font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:var(--text-muted);margin-top:4px}
+
+@keyframes fadeUp{
+  from{opacity:0;transform:translateY(24px)}
+  to{opacity:1;transform:translateY(0)}
+}
+
+/* ── SECTION SHARED ──────────────────────────────── */
+section{position:relative;z-index:1}
+.section-wrap{max-width:1200px;margin:0 auto;padding:0 48px}
+.section-label{
+  font-size:10px;letter-spacing:0.28em;text-transform:uppercase;
+  color:var(--gold);margin-bottom:16px;
+  display:flex;align-items:center;gap:12px;
+}
+.section-label::before{content:'';width:24px;height:1px;background:var(--gold)}
+.section-title{
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(36px,5vw,60px);
+  font-weight:300;line-height:1.05;letter-spacing:-0.01em;
+}
+.section-title em{font-style:italic;color:var(--gold)}
+
+/* ── SERVICES ────────────────────────────────────── */
+#services{
+  padding:120px 0;
+  border-top:1px solid var(--border);
+}
+.services-header{
+  display:flex;justify-content:space-between;align-items:flex-end;
+  margin-bottom:72px;
+  gap:40px;
+}
+.services-desc{
+  max-width:360px;color:var(--text-secondary);
+  font-size:15px;line-height:1.75;
+  padding-bottom:4px;
+}
+.services-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:1px;
+  background:var(--border);
+  border:1px solid var(--border);
+}
+.service-card{
+  background:var(--carbon);
+  padding:48px 40px;
+  position:relative;overflow:hidden;
+  transition:background var(--transition);
+}
+.service-card::before{
+  content:'';
+  position:absolute;top:0;left:0;right:0;
+  height:1px;
+  background:linear-gradient(90deg,transparent,var(--gold),transparent);
+  opacity:0;
+  transition:opacity var(--transition);
+}
+.service-card:hover{background:var(--carbon-2)}
+.service-card:hover::before{opacity:1}
+.service-num{
+  font-family:'DM Mono',monospace;
+  font-size:11px;color:var(--gold-dim);
+  letter-spacing:0.1em;margin-bottom:32px;
+}
+.service-icon{
+  width:40px;height:40px;margin-bottom:28px;
+  opacity:0.7;
+}
+.service-name{
+  font-family:'Cormorant Garamond',serif;
+  font-size:26px;font-weight:300;
+  margin-bottom:12px;line-height:1.1;
+}
+.service-desc{
+  font-size:13px;color:var(--text-secondary);
+  line-height:1.7;margin-bottom:28px;
+}
+.service-link{
+  font-size:10px;letter-spacing:0.2em;text-transform:uppercase;
+  color:var(--gold-dim);
+  display:flex;align-items:center;gap:8px;
+  transition:color var(--transition);
+}
+.service-card:hover .service-link{color:var(--gold)}
+.service-link svg{transition:transform 0.3s ease}
+.service-card:hover .service-link svg{transform:translateX(5px)}
+.service-tag{
+  display:inline-block;margin-top:24px;
+  font-size:9px;letter-spacing:0.15em;text-transform:uppercase;
+  padding:4px 10px;border:1px solid var(--border-gold);
+  color:var(--gold-dim);border-radius:1px;
+}
+
+/* ── PRICING ─────────────────────────────────────── */
+#pricing{
+  padding:120px 0;
+  background:linear-gradient(180deg,#0a0a0a 0%,#0d0d0b 100%);
+  border-top:1px solid var(--border);
+}
+.pricing-header{margin-bottom:72px}
+.pricing-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:20px;
+}
+.price-card{
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+  padding:48px 36px;
+  position:relative;overflow:hidden;
+  transition:border-color var(--transition),transform 0.3s ease;
+  background:var(--carbon);
+}
+.price-card:hover{border-color:var(--border-gold);transform:translateY(-4px)}
+.price-card.featured{
+  border-color:var(--gold);
+  background:linear-gradient(160deg,var(--carbon-2) 0%,var(--carbon) 100%);
+}
+.price-card.featured::before{
+  content:'Most Popular';
+  position:absolute;top:0;right:0;
+  font-size:9px;letter-spacing:0.2em;text-transform:uppercase;
+  background:var(--gold);color:#0a0a0a;
+  padding:6px 14px;font-weight:500;
+}
+.price-tier{
+  font-size:10px;letter-spacing:0.25em;text-transform:uppercase;
+  color:var(--text-muted);margin-bottom:20px;
+}
+.price-name{
+  font-family:'Cormorant Garamond',serif;
+  font-size:32px;font-weight:300;margin-bottom:8px;
+}
+.price-amount{
+  display:flex;align-items:baseline;gap:4px;
+  margin-bottom:6px;
+}
+.price-currency{font-size:16px;color:var(--gold);margin-top:8px}
+.price-num{
+  font-family:'Cormorant Garamond',serif;
+  font-size:56px;font-weight:300;color:var(--gold);line-height:1;
+}
+.price-period{font-size:12px;color:var(--text-muted)}
+.price-divider{height:1px;background:var(--border);margin:28px 0}
+.price-features{list-style:none;display:flex;flex-direction:column;gap:12px;margin-bottom:36px}
+.price-features li{
+  font-size:13px;color:var(--text-secondary);
+  display:flex;align-items:center;gap:10px;
+}
+.price-features li::before{
+  content:'';flex-shrink:0;
+  width:14px;height:1px;background:var(--gold-dim);
+}
+.price-features li.included{color:var(--text-primary)}
+.price-features li.included::before{background:var(--gold)}
+.btn-book{
+  width:100%;padding:14px;
+  font-size:11px;letter-spacing:0.18em;text-transform:uppercase;
+  border:1px solid var(--border);
+  color:var(--text-secondary);
+  border-radius:var(--radius);
+  transition:all var(--transition);
+  font-family:'DM Sans',sans-serif;
+  font-weight:400;
+}
+.btn-book:hover{border-color:var(--gold);color:var(--gold);background:rgba(201,169,110,0.05)}
+.price-card.featured .btn-book{
+  background:var(--gold);color:#0a0a0a;border-color:var(--gold);font-weight:500;
+}
+.price-card.featured .btn-book:hover{background:var(--gold-light)}
+
+/* ── REVIEWS ─────────────────────────────────────── */
+#reviews{
+  padding:120px 0;
+  border-top:1px solid var(--border);
+}
+.reviews-header{
+  display:flex;justify-content:space-between;align-items:flex-end;
+  margin-bottom:60px;gap:40px;
+}
+.rating-summary{text-align:right}
+.rating-big{
+  font-family:'Cormorant Garamond',serif;
+  font-size:64px;font-weight:300;color:var(--gold);
+  line-height:1;
+}
+.rating-stars{display:flex;gap:4px;justify-content:flex-end;margin-top:6px}
+.star{color:var(--gold);font-size:14px}
+.rating-count{font-size:11px;color:var(--text-muted);margin-top:6px;letter-spacing:0.1em}
+.reviews-track{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:20px;
+}
+.review-card{
+  border:1px solid var(--border);border-radius:var(--radius);
+  padding:36px;background:var(--carbon);
+  transition:border-color var(--transition);
+}
+.review-card:hover{border-color:var(--border-gold)}
+.review-stars{display:flex;gap:3px;margin-bottom:20px}
+.review-text{
+  font-family:'Cormorant Garamond',serif;
+  font-size:19px;font-weight:300;line-height:1.55;
+  color:var(--text-primary);margin-bottom:24px;
+  font-style:italic;
+}
+.review-author{display:flex;align-items:center;gap:12px}
+.review-avatar{
+  width:36px;height:36px;border-radius:50%;
+  background:var(--carbon-3);
+  display:flex;align-items:center;justify-content:center;
+  font-size:13px;font-weight:500;color:var(--gold);
+  border:1px solid var(--border-gold);
+  flex-shrink:0;
+}
+.review-name{font-size:13px;font-weight:400}
+.review-via{font-size:11px;color:var(--text-muted);letter-spacing:0.1em}
+.rating-link{
+  display:inline-block;margin-top:10px;
+  font-size:10px;letter-spacing:0.16em;text-transform:uppercase;
+  color:var(--gold-dim);text-decoration:underline;text-underline-offset:3px;
+  transition:color var(--transition);
+}
+.rating-link:hover{color:var(--gold)}
+/* Skeleton shimmer */
+@keyframes shimmer{
+  0%{background-position:-400px 0}
+  100%{background-position:400px 0}
+}
+.skeleton{pointer-events:none}
+.skel{
+  border-radius:2px;
+  background:linear-gradient(90deg,var(--carbon-3) 25%,var(--carbon-4) 50%,var(--carbon-3) 75%);
+  background-size:800px 100%;
+  animation:shimmer 1.6s infinite linear;
+}
+.skel-line{height:12px;margin-bottom:10px}
+.skel-block{height:80px;margin:16px 0}
+.w60{width:60%}.w40{width:40%}
+.review-photo{
+  width:36px;height:36px;border-radius:50%;
+  object-fit:cover;border:1px solid var(--border-gold);flex-shrink:0;
+}
+.review-card.loaded{animation:fadeUp 0.5s ease forwards;opacity:0}
+
+/* ── GALLERY ─────────────────────────────────────── */
+#gallery{
+  padding:120px 0;
+  border-top:1px solid var(--border);
+  overflow:hidden;
+}
+.gallery-header{margin-bottom:60px}
+.gallery-grid{
+  display:grid;
+  grid-template-columns:repeat(12,1fr);
+  grid-template-rows:auto;
+  gap:8px;
+}
+.gallery-item{
+  background:var(--carbon-2);
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+  overflow:hidden;
+  position:relative;
+}
+.gallery-item:nth-child(1){grid-column:span 5;grid-row:span 2}
+.gallery-item:nth-child(2){grid-column:span 4}
+.gallery-item:nth-child(3){grid-column:span 3}
+.gallery-item:nth-child(4){grid-column:span 4}
+.gallery-item:nth-child(5){grid-column:span 3}
+.gallery-item:nth-child(6){grid-column:span 5}
+.gallery-placeholder{
+  width:100%;
+  aspect-ratio:4/3;
+  background:var(--carbon-2);
+  display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  gap:12px;
+  color:var(--text-muted);
+  font-size:11px;letter-spacing:0.15em;text-transform:uppercase;
+}
+.gallery-item:nth-child(1) .gallery-placeholder{aspect-ratio:3/4}
+.gallery-icon{
+  width:32px;height:32px;
+  border:1px solid var(--border);
+  border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+}
+/* Gallery labels */
+.gallery-label{
+  position:absolute;bottom:0;left:0;right:0;
+  padding:20px;
+  background:linear-gradient(transparent,rgba(10,10,10,0.85));
+  font-size:11px;letter-spacing:0.15em;text-transform:uppercase;
+  color:var(--text-secondary);
+  opacity:0;transition:opacity var(--transition);
+}
+.gallery-item:hover .gallery-label{opacity:1}
+.gallery-note{
+  margin-top:20px;
+  font-size:12px;color:var(--text-muted);
+  font-style:italic;letter-spacing:0.05em;text-align:center;
+}
+
+/* ── MAP / VISIT ─────────────────────────────────── */
+#visit{
+  padding:120px 0;
+  border-top:1px solid var(--border);
+}
+.visit-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:80px;
+  align-items:start;
+}
+.visit-map{
+  background:var(--carbon-2);
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+  overflow:hidden;
+  height:400px;
+  position:relative;
+}
+/* Decorative map placeholder */
+.map-placeholder{
+  width:100%;height:100%;
+  display:flex;align-items:center;justify-content:center;
+  flex-direction:column;gap:16px;
+  position:relative;
+  overflow:hidden;
+}
+.map-grid-lines{
+  position:absolute;inset:0;
+  background-image:
+    linear-gradient(rgba(201,169,110,0.04) 1px, transparent 1px),
+    linear-gradient(90deg,rgba(201,169,110,0.04) 1px, transparent 1px);
+  background-size:40px 40px;
+}
+.map-pin{
+  position:relative;z-index:2;
+  display:flex;flex-direction:column;align-items:center;gap:0;
+}
+.map-pin-dot{
+  width:14px;height:14px;
+  background:var(--gold);border-radius:50%;
+  box-shadow:0 0 0 6px rgba(201,169,110,0.15),0 0 0 12px rgba(201,169,110,0.07);
+  animation:pinPulse 2.5s ease-in-out infinite;
+}
+@keyframes pinPulse{
+  0%,100%{box-shadow:0 0 0 6px rgba(201,169,110,0.15),0 0 0 12px rgba(201,169,110,0.07)}
+  50%{box-shadow:0 0 0 10px rgba(201,169,110,0.2),0 0 0 20px rgba(201,169,110,0.05)}
+}
+.map-pin-line{width:1px;height:30px;background:linear-gradient(var(--gold),transparent)}
+.map-label{
+  position:relative;z-index:2;margin-top:16px;
+  font-size:11px;letter-spacing:0.15em;text-transform:uppercase;
+  color:var(--text-secondary);text-align:center;
+}
+.map-open-btn{
+  position:absolute;bottom:20px;right:20px;z-index:2;
+  font-size:10px;letter-spacing:0.15em;text-transform:uppercase;
+  padding:8px 16px;border:1px solid var(--border);
+  border-radius:var(--radius);color:var(--text-secondary);
+  background:rgba(10,10,10,0.7);backdrop-filter:blur(8px);
+  transition:all var(--transition);
+}
+.map-open-btn:hover{border-color:var(--gold);color:var(--gold)}
+.visit-info{padding-top:8px}
+.visit-address{
+  font-family:'Cormorant Garamond',serif;
+  font-size:28px;font-weight:300;line-height:1.35;
+  margin:24px 0 36px;
+}
+.visit-details{display:flex;flex-direction:column;gap:20px}
+.visit-row{
+  display:flex;gap:20px;
+  padding-bottom:20px;
+  border-bottom:1px solid var(--border);
+}
+.visit-row:last-child{border-bottom:none;padding-bottom:0}
+.visit-row-label{
+  font-size:10px;letter-spacing:0.2em;text-transform:uppercase;
+  color:var(--text-muted);width:80px;flex-shrink:0;padding-top:2px;
+}
+.visit-row-value{font-size:14px;color:var(--text-secondary);line-height:1.6}
+.visit-row-value strong{color:var(--text-primary);font-weight:400}
+.visit-cta-row{margin-top:36px;display:flex;gap:12px}
+
+/* ── BOOKING MODAL ───────────────────────────────── */
+.modal-overlay{
+  position:fixed;inset:0;z-index:200;
+  background:rgba(10,10,10,0.92);
+  backdrop-filter:blur(12px);
+  display:flex;align-items:center;justify-content:center;
+  opacity:0;pointer-events:none;
+  transition:opacity 0.4s ease;
+}
+.modal-overlay.open{opacity:1;pointer-events:all}
+.modal{
+  background:var(--carbon);
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+  width:100%;max-width:560px;
+  max-height:90vh;overflow-y:auto;
+  transform:translateY(20px);
+  transition:transform 0.4s ease;
+}
+.modal-overlay.open .modal{transform:translateY(0)}
+.modal-header{
+  padding:36px 40px 24px;
+  border-bottom:1px solid var(--border);
+  display:flex;justify-content:space-between;align-items:center;
+}
+.modal-title{
+  font-family:'Cormorant Garamond',serif;
+  font-size:28px;font-weight:300;
+}
+.modal-close{
+  width:32px;height:32px;
+  display:flex;align-items:center;justify-content:center;
+  border:1px solid var(--border);border-radius:50%;
+  color:var(--text-muted);font-size:16px;
+  transition:all var(--transition);
+}
+.modal-close:hover{border-color:var(--text-secondary);color:var(--text-primary)}
+.modal-body{padding:36px 40px}
+.form-group{margin-bottom:24px}
+.form-label{
+  font-size:10px;letter-spacing:0.2em;text-transform:uppercase;
+  color:var(--text-muted);margin-bottom:10px;display:block;
+}
+.form-input, .form-select, .form-textarea{
+  width:100%;background:var(--carbon-2);
+  border:1px solid var(--border);border-radius:var(--radius);
+  padding:14px 16px;
+  font-family:'DM Sans',sans-serif;font-size:14px;
+  color:var(--text-primary);
+  transition:border-color var(--transition);
+  outline:none;
+  appearance:none;
+}
+.form-input::placeholder,.form-textarea::placeholder{color:var(--text-muted)}
+.form-input:focus,.form-select:focus,.form-textarea:focus{border-color:var(--gold-dim)}
+.form-select{
+  background-image:url("data:image/svg+xml,%3Csvg width='10' height='6' viewBox='0 0 10 6' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%234a4844' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;background-position:right 14px center;
+  padding-right:36px;cursor:pointer;
+}
+.form-textarea{resize:vertical;min-height:90px;line-height:1.5}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.modal-footer{padding:0 40px 36px}
+.btn-submit{
+  width:100%;padding:16px;
+  background:var(--gold);color:#0a0a0a;
+  font-family:'DM Sans',sans-serif;
+  font-size:12px;letter-spacing:0.18em;text-transform:uppercase;
+  font-weight:500;border-radius:var(--radius);
+  transition:background var(--transition);
+}
+.btn-submit:hover{background:var(--gold-light)}
+.form-note{
+  font-size:11px;color:var(--text-muted);
+  text-align:center;margin-top:14px;
+  line-height:1.5;
+}
+
+/* ── FOOTER ──────────────────────────────────────── */
+footer{
+  border-top:1px solid var(--border);
+  padding:60px 0 36px;
+}
+.footer-inner{
+  display:flex;justify-content:space-between;align-items:flex-start;
+  margin-bottom:48px;gap:40px;
+}
+
+.footer-logo{
+  font-family:'Cormorant Garamond',serif;
+  font-size:24px;font-weight:300;letter-spacing:0.12em;
+  text-transform:uppercase;margin-bottom:12px;
+}
+.footer-logo span{color:var(--gold)}
+.footer-tagline{font-size:12px;color:var(--text-muted);letter-spacing:0.05em}
+.footer-cols{display:flex;gap:64px}
+.footer-col-title{
+  font-size:10px;letter-spacing:0.2em;text-transform:uppercase;
+  color:var(--text-muted);margin-bottom:16px;
+}
+.footer-links{list-style:none;display:flex;flex-direction:column;gap:10px}
+.footer-links a{
+  font-size:13px;color:var(--text-secondary);
+  transition:color var(--transition);
+}
+.footer-links a:hover{color:var(--text-primary)}
+.footer-bottom{
+  border-top:1px solid var(--border);padding-top:24px;
+  display:flex;justify-content:space-between;align-items:center;
+  font-size:11px;color:var(--text-muted);letter-spacing:0.06em;
+}
+.footer-badges{display:flex;gap:20px}
+.footer-badge{
+  font-size:10px;letter-spacing:0.15em;text-transform:uppercase;
+  padding:4px 10px;border:1px solid var(--border);
+  border-radius:1px;color:var(--text-muted);
+}
+
+/* ── SCROLL ANIMATIONS ───────────────────────────── */
+.reveal{
+  opacity:0;transform:translateY(32px);
+  transition:opacity 0.8s ease, transform 0.8s ease;
+}
+.reveal.visible{opacity:1;transform:translateY(0)}
+.reveal-delay-1{transition-delay:0.1s}
+.reveal-delay-2{transition-delay:0.2s}
+.reveal-delay-3{transition-delay:0.3s}
+
+/* ── MOBILE ──────────────────────────────────────── */
+@media(max-width:900px){
+  nav{padding:20px 24px}
+  nav.scrolled{padding:14px 24px}
+  .nav-links{display:none}
+  #hero{padding:0 24px 60px}
+  .hero-mute{left:24px;bottom:72px}
+  .hero-stats{right:24px;gap:28px}
+  .stat-num{font-size:28px}
+  .section-wrap{padding:0 24px}
+  .services-header{flex-direction:column}
+  .services-grid{grid-template-columns:1fr}
+  .pricing-grid{grid-template-columns:1fr}
+  .reviews-header{flex-direction:column}
+  .reviews-track{grid-template-columns:1fr}
+  .gallery-grid{grid-template-columns:1fr 1fr}
+  .gallery-item:nth-child(1){grid-column:span 2}
+  .gallery-item:nth-child(n){grid-column:span 1}
+  .visit-grid{grid-template-columns:1fr}
+  .footer-inner{flex-direction:column}
+  .footer-cols{flex-direction:column;gap:32px}
+  .footer-bottom{flex-direction:column;gap:12px;text-align:center}
+  .form-row{grid-template-columns:1fr}
+  .modal{max-width:calc(100vw - 32px)}
+  .modal-body,.modal-footer{padding-left:24px;padding-right:24px}
+  .modal-header{padding:24px 24px 20px}
+  body{cursor:auto}
+  #cursor,#cursor-ring{display:none}
+}
+
+/* ── WHATSAPP FLOAT ──────────────────────────────── */
+.wa-float{
+  position:fixed;bottom:32px;right:32px;z-index:150;
+  width:52px;height:52px;border-radius:50%;
+  background:#25D366;
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 4px 24px rgba(37,211,102,0.3);
+  transition:transform 0.3s ease, box-shadow 0.3s ease;
+}
+.wa-float:hover{transform:scale(1.1);box-shadow:0 6px 32px rgba(37,211,102,0.4)}
+.wa-float svg{width:26px;height:26px;fill:#fff}
+</style>
+</head>
+<body>
+
+<!-- Custom cursor -->
+<div id="cursor"></div>
+<div id="cursor-ring"></div>
+
+<!-- WhatsApp Float -->
+<a href="https://wa.me/201050050020" target="_blank" class="wa-float" aria-label="Chat on WhatsApp">
+  <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/>
+    <path d="M12 0C5.373 0 0 5.373 0 12c0 2.108.547 4.1 1.504 5.836L.057 23.7a.5.5 0 00.617.633l5.994-1.42A11.936 11.936 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.9a9.9 9.9 0 01-5.031-1.376l-.358-.214-3.719.88.936-3.618-.234-.372A9.86 9.86 0 012.1 12C2.1 6.532 6.532 2.1 12 2.1 17.468 2.1 21.9 6.532 21.9 12c0 5.468-4.432 9.9-9.9 9.9z"/>
+  </svg>
+</a>
+
+<!-- ═══ NAV ═══ -->
+<nav id="nav">
+  <div class="nav-logo">Detailing <span>Co.</span></div>
+  <div class="nav-links">
+    <a href="#services">Services</a>
+    <a href="#pricing">Pricing</a>
+    <a href="#reviews">Reviews</a>
+    <a href="#gallery">Gallery</a>
+    <a href="#visit">Visit</a>
+    <a href="#" class="nav-cta" onclick="openModal(event)">Book Now</a>
+  </div>
+</nav>
+
+<!-- ═══ HERO ═══ -->
+<section id="hero">
+  <div class="hero-bg">
+    <video id="hero-video" autoplay muted loop playsinline preload="auto">
+      <source src="video.mp4" type="video/mp4"/>
+      <source src="https://videos.pexels.com/video-files/7673882/7673882-uhd_2560_1440_24fps.mp4" type="video/mp4"/>
+    </video>
+    <div class="hero-overlay"></div>
+    <div class="hero-overlay-top"></div>
+  </div>
+  <!-- Mute toggle -->
+  <button class="hero-mute" id="muteBtn" onclick="toggleMute()" aria-label="Toggle sound">
+    <svg id="icon-muted" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M9 3L5 6H2v4h3l4 3V3z" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/>
+      <path d="M13 5l-4 6M9 5l4 6" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+    </svg>
+    <svg id="icon-unmuted" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" style="display:none">
+      <path d="M9 3L5 6H2v4h3l4 3V3z" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/>
+      <path d="M11.5 5.5c.8.8 1.2 1.9 1.2 3s-.4 2.1-1.2 3" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+      <path d="M13.5 3.5c1.3 1.4 2 3.2 2 5s-.7 3.6-2 5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+    </svg>
+    <span id="mute-label">Sound off</span>
+  </button>
+  <div class="hero-content">
+    <div class="hero-eyebrow">Sheikh Zayed · Galleria40</div>
+    <h1 class="hero-h1">Your car.<br><em>Perfected.</em></h1>
+    <p class="hero-sub">Premium detailing, ceramic coating, and SunTek paint protection film — delivered with obsessive attention to detail.</p>
+    <div class="hero-actions">
+      <a href="#" class="btn-primary" onclick="openModal(event)">
+        Book an Appointment
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </a>
+      <a href="#services" class="btn-ghost">Explore services</a>
+    </div>
+  </div>
+  <div class="hero-stats">
+    <div class="stat-item">
+      <div class="stat-num">5+</div>
+      <div class="stat-label">Years of Excellence</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">1K+</div>
+      <div class="stat-label">Cars Protected</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">4.9</div>
+      <div class="stat-label">Google Rating</div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ SERVICES ═══ -->
+<section id="services">
+  <div class="section-wrap">
+    <div class="services-header reveal">
+      <div>
+        <div class="section-label">What We Do</div>
+        <h2 class="section-title">Crafted for<br><em>perfectionists</em></h2>
+      </div>
+      <p class="services-desc">Every vehicle that passes through our doors receives the same meticulous treatment — whether it's a daily driver or a collector's piece.</p>
+    </div>
+    <div class="services-grid">
+      <div class="service-card reveal">
+        <div class="service-num">01</div>
+        <svg class="service-icon" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="20" cy="20" r="18" stroke="var(--gold)" stroke-width="0.8" opacity="0.4"/>
+          <circle cx="20" cy="20" r="10" stroke="var(--gold)" stroke-width="0.8"/>
+          <path d="M20 6v4M20 30v4M6 20h4M30 20h4" stroke="var(--gold)" stroke-width="0.8" stroke-linecap="round" opacity="0.5"/>
+        </svg>
+        <h3 class="service-name">Premium<br>Car Wash</h3>
+        <p class="service-desc">A thorough, hand-crafted wash using pH-neutral shampoos, foam cannon pre-rinse, and microfibre drying. Your paint treated with the care it deserves.</p>
+        <div class="service-link">
+          <span>Learn more</span>
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 6h8M7 3l3 3-3 3" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <span class="service-tag">Starting EGP 400</span>
+      </div>
+      <div class="service-card reveal reveal-delay-1">
+        <div class="service-num">02</div>
+        <svg class="service-icon" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="8" y="12" width="24" height="16" rx="2" stroke="var(--gold)" stroke-width="0.8"/>
+          <path d="M8 18h24M14 12v16M26 12v16" stroke="var(--gold)" stroke-width="0.8" opacity="0.5"/>
+        </svg>
+        <h3 class="service-name">Full<br>Detailing</h3>
+        <p class="service-desc">Interior and exterior detailing from top to bottom. Paint decontamination, clay bar treatment, machine polishing, and full interior deep clean.</p>
+        <div class="service-link">
+          <span>Learn more</span>
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 6h8M7 3l3 3-3 3" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <span class="service-tag">Starting EGP 1,800</span>
+      </div>
+      <div class="service-card reveal reveal-delay-2">
+        <div class="service-num">03</div>
+        <svg class="service-icon" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M8 28L20 8l12 20H8z" stroke="var(--gold)" stroke-width="0.8"/>
+          <path d="M14 28l6-12 6 12" stroke="var(--gold)" stroke-width="0.8" opacity="0.4"/>
+        </svg>
+        <h3 class="service-name">Paint Protection<br>Film</h3>
+        <p class="service-desc">SunTek PPF — the industry's most trusted self-healing film. Shields your paint from rock chips, scratches, and UV damage with an invisible barrier.</p>
+        <div class="service-link">
+          <span>Learn more</span>
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 6h8M7 3l3 3-3 3" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <span class="service-tag">Custom Quote</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ PRICING ═══ -->
+<section id="pricing">
+  <div class="section-wrap">
+    <div class="pricing-header reveal">
+      <div class="section-label">Transparent Pricing</div>
+      <h2 class="section-title">Choose your<br><em>level of care</em></h2>
+    </div>
+    <div class="pricing-grid">
+      <!-- Essential -->
+      <div class="price-card reveal">
+        <div class="price-tier">Tier 01</div>
+        <div class="price-name">Essential Wash</div>
+        <div class="price-amount">
+          <span class="price-currency">EGP</span>
+          <span class="price-num">400</span>
+        </div>
+        <div class="price-divider"></div>
+        <ul class="price-features">
+          <li class="included">Foam cannon pre-rinse</li>
+          <li class="included">Hand wash, two-bucket method</li>
+          <li class="included">Microfibre dry</li>
+          <li class="included">Tyre & trim dressing</li>
+          <li>Interior vacuum</li>
+          <li>Clay bar treatment</li>
+          <li>Machine polish</li>
+        </ul>
+        <button class="btn-book" onclick="openModal(event)">Book This Service</button>
+      </div>
+      <!-- Premium -->
+      <div class="price-card featured reveal reveal-delay-1">
+        <div class="price-tier">Tier 02</div>
+        <div class="price-name">Premium Detail</div>
+        <div class="price-amount">
+          <span class="price-currency">EGP</span>
+          <span class="price-num">1,800</span>
+        </div>
+        <div class="price-divider"></div>
+        <ul class="price-features">
+          <li class="included">Foam cannon pre-rinse</li>
+          <li class="included">Hand wash, two-bucket method</li>
+          <li class="included">Microfibre dry</li>
+          <li class="included">Tyre & trim dressing</li>
+          <li class="included">Interior vacuum & wipe-down</li>
+          <li class="included">Clay bar decontamination</li>
+          <li>Machine polish (paint correction)</li>
+        </ul>
+        <button class="btn-book" onclick="openModal(event)">Book This Service</button>
+      </div>
+      <!-- Ultimate -->
+      <div class="price-card reveal reveal-delay-2">
+        <div class="price-tier">Tier 03</div>
+        <div class="price-name">Ultimate Package</div>
+        <div class="price-amount">
+          <span class="price-currency">EGP</span>
+          <span class="price-num">3,500</span>
+        </div>
+        <div class="price-divider"></div>
+        <ul class="price-features">
+          <li class="included">Foam cannon pre-rinse</li>
+          <li class="included">Hand wash, two-bucket method</li>
+          <li class="included">Microfibre dry</li>
+          <li class="included">Tyre & trim dressing</li>
+          <li class="included">Full interior deep clean</li>
+          <li class="included">Clay bar decontamination</li>
+          <li class="included">Single-stage machine polish</li>
+        </ul>
+        <button class="btn-book" onclick="openModal(event)">Book This Service</button>
+      </div>
+    </div>
+    <p style="font-size:12px;color:var(--text-muted);text-align:center;margin-top:28px;letter-spacing:0.05em">PPF and ceramic coating quoted individually based on vehicle size and coverage. <a href="#" onclick="openModal(event)" style="color:var(--gold-dim);text-decoration:underline;text-underline-offset:3px">Request a custom quote →</a></p>
+  </div>
+</section>
+
+<!-- ═══ REVIEWS ═══ -->
+<section id="reviews">
+  <div class="section-wrap">
+    <div class="reviews-header reveal">
+      <div>
+        <div class="section-label">Client Reviews</div>
+        <h2 class="section-title">Trusted by<br><em>car enthusiasts</em></h2>
+      </div>
+      <div class="rating-summary">
+        <div class="rating-big" id="rating-num">—</div>
+        <div class="rating-stars" id="rating-stars">
+          <span class="star" style="opacity:0.2">★</span>
+          <span class="star" style="opacity:0.2">★</span>
+          <span class="star" style="opacity:0.2">★</span>
+          <span class="star" style="opacity:0.2">★</span>
+          <span class="star" style="opacity:0.2">★</span>
+        </div>
+        <div class="rating-count" id="rating-count">Loading from Google…</div>
+        <a href="https://www.google.com/maps/place/Detailing+Co./@30.0163444,30.998644,17z/data=!4m6!3m5!1s0x14585be90458d291:0xf00ee01b8703c919!8m2!3d30.0171382!4d31.0009366!16s%2Fg%2F11j2jdcf_d?entry=ttu&g_ep=EgoyMDI2MDUwNi4wIKXMDSoASAFQAw%3D%3D" target="_blank" class="rating-link">Read all reviews →</a>
+      </div>
+    </div>
+
+    <!-- Skeleton loader -->
+    <div class="reviews-track" id="reviews-track">
+      <div class="review-card skeleton"><div class="skel skel-line w60"></div><div class="skel skel-block"></div><div class="skel skel-line w40" style="margin-top:20px"></div></div>
+      <div class="review-card skeleton"><div class="skel skel-line w60"></div><div class="skel skel-block"></div><div class="skel skel-line w40" style="margin-top:20px"></div></div>
+      <div class="review-card skeleton"><div class="skel skel-line w60"></div><div class="skel skel-block"></div><div class="skel skel-line w40" style="margin-top:20px"></div></div>
+    </div>
+
+    <!-- Error state (hidden by default) -->
+    <div id="reviews-error" style="display:none;text-align:center;padding:40px 0">
+      <p style="color:var(--text-muted);font-size:13px;margin-bottom:16px">Could not load live reviews right now.</p>
+      <a href="https://www.google.com/maps/place/Detailing+Co./@30.0163444,30.998644,17z/data=!4m6!3m5!1s0x14585be90458d291:0xf00ee01b8703c919!8m2!3d30.0171382!4d31.0009366!16s%2Fg%2F11j2jdcf_d?entry=ttu&g_ep=EgoyMDI2MDUwNi4wIKXMDSoASAFQAw%3D%3D" target="_blank" style="font-size:12px;letter-spacing:0.15em;text-transform:uppercase;color:var(--gold);text-decoration:underline;text-underline-offset:4px">View on Google Maps →</a>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ GALLERY ═══ -->
+<section id="gallery">
+  <div class="section-wrap">
+    <div class="gallery-header reveal">
+      <div class="section-label">Our Work</div>
+      <h2 class="section-title">The results<br><em>speak clearly</em></h2>
+    </div>
+    <div class="gallery-grid reveal">
+      <div class="gallery-item">
+        <div class="gallery-placeholder">
+          <div class="gallery-icon">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><rect x="1" y="1" width="12" height="12" rx="1" stroke="var(--text-muted)" stroke-width="0.8"/><circle cx="5" cy="5" r="1.5" stroke="var(--text-muted)" stroke-width="0.8"/><path d="M1 10l3-3 2 2 3-4 4 5" stroke="var(--text-muted)" stroke-width="0.8" stroke-linejoin="round"/></svg>
+          </div>
+          <span>PPF Installation</span>
+        </div>
+        <div class="gallery-label">Full front PPF — Maserati Ghibli</div>
+      </div>
+      <div class="gallery-item">
+        <div class="gallery-placeholder">
+          <div class="gallery-icon">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><rect x="1" y="1" width="12" height="12" rx="1" stroke="var(--text-muted)" stroke-width="0.8"/><circle cx="5" cy="5" r="1.5" stroke="var(--text-muted)" stroke-width="0.8"/><path d="M1 10l3-3 2 2 3-4 4 5" stroke="var(--text-muted)" stroke-width="0.8" stroke-linejoin="round"/></svg>
+          </div>
+          <span>Paint Correction</span>
+        </div>
+        <div class="gallery-label">Single-stage correction — BMW M4</div>
+      </div>
+      <div class="gallery-item">
+        <div class="gallery-placeholder">
+          <div class="gallery-icon">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><rect x="1" y="1" width="12" height="12" rx="1" stroke="var(--text-muted)" stroke-width="0.8"/><circle cx="5" cy="5" r="1.5" stroke="var(--text-muted)" stroke-width="0.8"/><path d="M1 10l3-3 2 2 3-4 4 5" stroke="var(--text-muted)" stroke-width="0.8" stroke-linejoin="round"/></svg>
+          </div>
+          <span>Interior Detail</span>
+        </div>
+        <div class="gallery-label">Full interior — Range Rover Vogue</div>
+      </div>
+      <div class="gallery-item">
+        <div class="gallery-placeholder">
+          <div class="gallery-icon">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><rect x="1" y="1" width="12" height="12" rx="1" stroke="var(--text-muted)" stroke-width="0.8"/><circle cx="5" cy="5" r="1.5" stroke="var(--text-muted)" stroke-width="0.8"/><path d="M1 10l3-3 2 2 3-4 4 5" stroke="var(--text-muted)" stroke-width="0.8" stroke-linejoin="round"/></svg>
+          </div>
+          <span>Ceramic Coating</span>
+        </div>
+        <div class="gallery-label">9H ceramic — Porsche 911</div>
+      </div>
+      <div class="gallery-item">
+        <div class="gallery-placeholder">
+          <div class="gallery-icon">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><rect x="1" y="1" width="12" height="12" rx="1" stroke="var(--text-muted)" stroke-width="0.8"/><circle cx="5" cy="5" r="1.5" stroke="var(--text-muted)" stroke-width="0.8"/><path d="M1 10l3-3 2 2 3-4 4 5" stroke="var(--text-muted)" stroke-width="0.8" stroke-linejoin="round"/></svg>
+          </div>
+          <span>Premium Wash</span>
+        </div>
+        <div class="gallery-label">Signature wash — Mercedes AMG</div>
+      </div>
+      <div class="gallery-item">
+        <div class="gallery-placeholder">
+          <div class="gallery-icon">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><rect x="1" y="1" width="12" height="12" rx="1" stroke="var(--text-muted)" stroke-width="0.8"/><circle cx="5" cy="5" r="1.5" stroke="var(--text-muted)" stroke-width="0.8"/><path d="M1 10l3-3 2 2 3-4 4 5" stroke="var(--text-muted)" stroke-width="0.8" stroke-linejoin="round"/></svg>
+          </div>
+          <span>Wheel Detailing</span>
+        </div>
+        <div class="gallery-label">Wheel & brake caliper — Audi RS6</div>
+      </div>
+    </div>
+    <p class="gallery-note">Replace placeholder tiles with your actual photography — contact us to discuss image requirements.</p>
+  </div>
+</section>
+
+<!-- ═══ VISIT / MAP ═══ -->
+<section id="visit">
+  <div class="section-wrap">
+    <div class="visit-grid">
+      <div class="reveal">
+        <div class="section-label">Find Us</div>
+        <h2 class="section-title">Come see<br><em>the studio</em></h2>
+        <div class="visit-address">
+          Galleria40, 26th of July<br>Corridor, Sheikh Zayed<br>City, Giza
+        </div>
+        <div class="visit-details">
+          <div class="visit-row">
+            <div class="visit-row-label">Hours</div>
+            <div class="visit-row-value">
+              <strong>Every day</strong> — Sunday through Saturday<br>
+              11:00 am – 10:00 pm
+            </div>
+          </div>
+          <div class="visit-row">
+            <div class="visit-row-label">Phone</div>
+            <div class="visit-row-value"><a href="tel:+201050050020" style="color:var(--gold)">0105 005 0020</a></div>
+          </div>
+          <div class="visit-row">
+            <div class="visit-row-label">Instagram</div>
+            <div class="visit-row-value"><a href="https://instagram.com/detailing.co" target="_blank" style="color:var(--text-secondary)">@detailing.co</a></div>
+          </div>
+        </div>
+        <div class="visit-cta-row">
+          <a href="#" class="btn-primary" onclick="openModal(event)">
+            Book Appointment
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+              <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </a>
+          <a href="https://wa.me/201050050020" target="_blank" style="display:inline-flex;align-items:center;gap:8px;font-size:12px;letter-spacing:0.12em;text-transform:uppercase;color:var(--text-secondary);padding:15px 0;transition:color 0.3s ease" onmouseover="this.style.color='var(--text-primary)'" onmouseout="this.style.color='var(--text-secondary)'">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.582 0 0 3.582 0 8c0 1.41.369 2.73 1.013 3.875L.038 15.728a.333.333 0 00.411.421l3.914-.953A7.956 7.956 0 008 16c4.418 0 8-3.582 8-8S12.418 0 8 0zm3.917 10.919c-.198.559-.98 1.023-1.607 1.157-.427.09-.984.163-2.86-.614-2.394-1.001-3.938-3.426-4.057-3.585-.113-.159-.951-1.266-.951-2.415 0-1.148.598-1.712 1.06-1.952.181-.097.377-.13.57-.13.167 0 .31.008.44.014.398.017.598.04.86.668.317.767.542 1.368.588 1.468.046.1.076.217.015.349-.057.136-.103.196-.203.313-.1.117-.195.206-.295.331-.09.112-.191.232-.078.456.113.22.503.828.896 1.17.565.49 1.04.665 1.277.77.237.107.375.09.514-.054.143-.147.604-.705.765-.946.161-.24.323-.2.544-.12.221.08 1.403.662 1.643.782.239.12.399.177.457.277.057.1.057.558-.14 1.117z"/></svg>
+            WhatsApp
+          </a>
+        </div>
+      </div>
+      <div class="reveal reveal-delay-1">
+        <div class="visit-map">
+          <div class="map-placeholder">
+            <div class="map-grid-lines"></div>
+            <div class="map-pin">
+              <div class="map-pin-dot"></div>
+              <div class="map-pin-line"></div>
+            </div>
+            <div class="map-label">Galleria40 · Sheikh Zayed</div>
+          </div>
+          <a href="https://www.google.com/maps/place/Detailing+Co./@30.0163444,30.998644,17z/data=!4m6!3m5!1s0x14585be90458d291:0xf00ee01b8703c919!8m2!3d30.0171382!4d31.0009366!16s%2Fg%2F11j2jdcf_d?entry=ttu&g_ep=EgoyMDI2MDUwNi4wIKXMDSoASAFQAw%3D%3D" target="_blank" class="map-open-btn">Open in Maps →</a>
+        </div>
+        <!-- Partner logos -->
+        <div style="margin-top:24px;padding:20px 24px;border:1px solid var(--border);border-radius:var(--radius);display:flex;align-items:center;gap:24px;justify-content:center">
+          <span style="font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:var(--text-muted)">Official Partner</span>
+          <div style="height:1px;width:20px;background:var(--border)"></div>
+          <span style="font-family:'Cormorant Garamond',serif;font-size:18px;color:var(--text-secondary);letter-spacing:0.1em">SunTek PPF</span>
+          <div style="height:1px;width:20px;background:var(--border)"></div>
+          <span style="font-family:'Cormorant Garamond',serif;font-size:18px;color:var(--text-secondary);letter-spacing:0.1em">Work Stuff</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ FOOTER ═══ -->
+<footer>
+  <div class="section-wrap">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <div class="footer-logo">Detailing <span>Co.</span></div>
+        <div class="footer-tagline">Premium car care · Sheikh Zayed, Egypt</div>
+      </div>
+      <div class="footer-cols">
+        <div>
+          <div class="footer-col-title">Services</div>
+          <ul class="footer-links">
+            <li><a href="#services">Premium Car Wash</a></li>
+            <li><a href="#services">Full Detailing</a></li>
+            <li><a href="#services">Paint Correction</a></li>
+            <li><a href="#services">Paint Protection Film</a></li>
+            <li><a href="#services">Ceramic Coating</a></li>
+          </ul>
+        </div>
+        <div>
+          <div class="footer-col-title">Visit</div>
+          <ul class="footer-links">
+            <li><a href="tel:+201050050020">0105 005 0020</a></li>
+            <li><a href="https://wa.me/201050050020">WhatsApp</a></li>
+            <li><a href="https://instagram.com/detailing.co" target="_blank">@detailing.co</a></li>
+            <li><a href="https://facebook.com/thedetailingco" target="_blank">Facebook</a></li>
+            <li><a href="#" onclick="openModal(event)">Book Appointment</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2025 Detailing Co. — SYL Car Cleaning. All rights reserved.</span>
+      <div class="footer-badges">
+        <span class="footer-badge">SunTek Partner</span>
+        <span class="footer-badge">Work Stuff</span>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- ═══ BOOKING MODAL ═══ -->
+<div class="modal-overlay" id="modal" onclick="handleOverlayClick(event)">
+  <div class="modal" onclick="event.stopPropagation()">
+    <div class="modal-header">
+      <h2 class="modal-title">Book an Appointment</h2>
+      <button class="modal-close" onclick="closeModal()" aria-label="Close">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Full Name</label>
+          <input type="text" class="form-input" placeholder="Your name"/>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Phone Number</label>
+          <input type="tel" class="form-input" placeholder="01X XXX XXXX"/>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Vehicle</label>
+        <input type="text" class="form-input" placeholder="e.g. BMW 5 Series 2022 — White"/>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Service Required</label>
+        <select class="form-select">
+          <option value="" disabled selected>Select a service</option>
+          <option>Essential Wash — EGP 400</option>
+          <option>Premium Detail — EGP 1,800</option>
+          <option>Ultimate Package — EGP 3,500</option>
+          <option>Paint Protection Film — Custom Quote</option>
+          <option>Ceramic Coating — Custom Quote</option>
+          <option>Paint Correction — Custom Quote</option>
+          <option>Other / Not Sure</option>
+        </select>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Preferred Date</label>
+          <input type="date" class="form-input"/>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Preferred Time</label>
+          <select class="form-select">
+            <option value="" disabled selected>Select time</option>
+            <option>11:00 AM</option>
+            <option>12:00 PM</option>
+            <option>1:00 PM</option>
+            <option>2:00 PM</option>
+            <option>3:00 PM</option>
+            <option>4:00 PM</option>
+            <option>5:00 PM</option>
+            <option>6:00 PM</option>
+            <option>7:00 PM</option>
+            <option>8:00 PM</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Notes (optional)</label>
+        <textarea class="form-textarea" placeholder="Any specific concerns or requests…"></textarea>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-submit" onclick="submitForm()">Confirm Booking Request</button>
+      <p class="form-note">We'll confirm your appointment via WhatsApp or phone within 2 hours.</p>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ── Video ── */
+const vid = document.getElementById('hero-video');
+vid.addEventListener('canplaythrough', () => vid.classList.add('loaded'));
+// Fallback: if already loaded (cached)
+if (vid.readyState >= 3) vid.classList.add('loaded');
+
+let muted = true;
+function toggleMute() {
+  muted = !muted;
+  vid.muted = muted;
+  document.getElementById('icon-muted').style.display   = muted ? '' : 'none';
+  document.getElementById('icon-unmuted').style.display = muted ? 'none' : '';
+  document.getElementById('mute-label').textContent = muted ? 'Sound off' : 'Sound on';
+}
+
+/* ── Cursor ── */
+const cursor = document.getElementById('cursor');
+const ring   = document.getElementById('cursor-ring');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{
+  mx=e.clientX;my=e.clientY;
+  cursor.style.left=mx+'px';cursor.style.top=my+'px';
+});
+function animateRing(){
+  rx+=(mx-rx)*0.12;ry+=(my-ry)*0.12;
+  ring.style.left=rx+'px';ring.style.top=ry+'px';
+  requestAnimationFrame(animateRing);
+}
+animateRing();
+document.querySelectorAll('a,button,.service-card,.review-card,.price-card,.gallery-item').forEach(el=>{
+  el.addEventListener('mouseenter',()=>document.body.classList.add('hovering'));
+  el.addEventListener('mouseleave',()=>document.body.classList.remove('hovering'));
+});
+
+/* ── Nav scroll ── */
+const nav = document.getElementById('nav');
+window.addEventListener('scroll',()=>{
+  nav.classList.toggle('scrolled',window.scrollY>60);
+});
+
+/* ── Reveal on scroll ── */
+const reveals = document.querySelectorAll('.reveal');
+const io = new IntersectionObserver(entries=>{
+  entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');io.unobserve(e.target)}});
+},{threshold:0.12});
+reveals.forEach(r=>io.observe(r));
+
+/* ── Modal ── */
+function openModal(e){
+  if(e)e.preventDefault();
+  document.getElementById('modal').classList.add('open');
+  document.body.style.overflow='hidden';
+}
+function closeModal(){
+  document.getElementById('modal').classList.remove('open');
+  document.body.style.overflow='';
+}
+function handleOverlayClick(e){
+  if(e.target===document.getElementById('modal'))closeModal();
+}
+function submitForm(){
+  closeModal();
+  // Show thank you toast
+  const toast=document.createElement('div');
+  toast.innerHTML='<strong>Booking request sent!</strong> We\'ll confirm shortly via WhatsApp.';
+  Object.assign(toast.style,{
+    position:'fixed',bottom:'32px',left:'50%',transform:'translateX(-50%)',
+    background:'var(--carbon-3)',border:'1px solid var(--border-gold)',
+    color:'var(--text-primary)',padding:'16px 28px',borderRadius:'2px',
+    fontSize:'13px',zIndex:'300',lineHeight:'1.5',
+    boxShadow:'0 8px 40px rgba(0,0,0,0.5)',
+    animation:'fadeUp 0.4s ease forwards',
+    whiteSpace:'nowrap',
+  });
+  document.body.appendChild(toast);
+  setTimeout(()=>{toast.style.opacity='0';toast.style.transition='opacity 0.4s ease';setTimeout(()=>toast.remove(),400)},4000);
+}
+/* ── Google Reviews ── */
+async function loadReviews() {
+  try {
+    const res = await fetch('/.netlify/functions/reviews');
+    if (!res.ok) throw new Error('API error');
+    const data = await res.json();
+
+    // Update rating header
+    const rating = data.rating?.toFixed(1) ?? '—';
+    document.getElementById('rating-num').textContent = rating;
+    document.getElementById('rating-count').textContent =
+      data.user_ratings_total
+        ? `${data.user_ratings_total.toLocaleString()} Google Reviews`
+        : 'Google Reviews';
+
+    // Render stars
+    const starsEl = document.getElementById('rating-stars');
+    const r = parseFloat(rating);
+    starsEl.innerHTML = [1,2,3,4,5].map(i => {
+      const fill = Math.min(1, Math.max(0, r - (i - 1)));
+      const op = fill >= 1 ? '1' : fill > 0 ? '0.5' : '0.15';
+      return `<span class="star" style="opacity:${op}">★</span>`;
+    }).join('');
+
+    // Render review cards
+    const track = document.getElementById('reviews-track');
+    if (!data.reviews?.length) throw new Error('No reviews');
+
+    track.innerHTML = data.reviews.slice(0, 3).map((r, i) => {
+      const initials = r.author_name.split(' ').map(w => w[0]).join('').slice(0,2).toUpperCase();
+      const stars = '★'.repeat(r.rating) + '☆'.repeat(5 - r.rating);
+      const delay = i * 0.12;
+      const photoEl = r.profile_photo_url
+        ? `<img src="${r.profile_photo_url}" class="review-photo" alt="${r.author_name}" onerror="this.replaceWith(makeAvatar('${initials}'))"/>`
+        : `<div class="review-avatar">${initials}</div>`;
+      return `
+        <div class="review-card loaded" style="animation-delay:${delay}s">
+          <div class="review-stars" style="color:var(--gold);font-size:13px;letter-spacing:2px;margin-bottom:20px">${stars}</div>
+          <p class="review-text">"${r.text}"</p>
+          <div class="review-author">
+            ${photoEl}
+            <div>
+              <div class="review-name">${r.author_name}</div>
+              <div class="review-via">Google · ${r.relative_time_description}</div>
+            </div>
+          </div>
+        </div>`;
+    }).join('');
+
+    // Re-observe new cards for scroll reveal
+    track.querySelectorAll('.review-card').forEach(el => io.observe(el));
+
+  } catch (e) {
+    console.warn('Reviews fetch failed:', e);
+    // Show fallback static reviews instead of blank
+    showFallbackReviews();
+  }
+}
+
+function makeAvatar(initials) {
+  const div = document.createElement('div');
+  div.className = 'review-avatar';
+  div.textContent = initials;
+  return div;
+}
+
+function showFallbackReviews() {
+  const track = document.getElementById('reviews-track');
+  document.getElementById('rating-num').textContent = '4.9';
+  document.getElementById('rating-count').textContent = 'Google Reviews';
+  document.getElementById('rating-stars').innerHTML =
+    '<span class="star">★</span>'.repeat(5);
+  track.innerHTML = [
+    { initials:'KA', name:'Karim A.', via:'Google Review', stars:5,
+      text:'The PPF installation was flawless — you genuinely cannot tell it\'s there. My car looks factory-fresh and I have complete peace of mind on the road.' },
+    { initials:'SM', name:'Sara M.', via:'Google Review', stars:5,
+      text:'Took my car in for a full detail. The team treated it like it was their own. Results were extraordinary — every surface immaculate.' },
+    { initials:'OT', name:'Omar T.', via:'Google Review', stars:5,
+      text:'Best detailing experience in Cairo. Detailing Co. is in a different league entirely. Worth every pound, and then some.' },
+  ].map((r, i) => `
+    <div class="review-card reveal${i>0?' reveal-delay-'+i:''}">
+      <div class="review-stars" style="color:var(--gold);font-size:13px;letter-spacing:2px;margin-bottom:20px">${'★'.repeat(r.stars)}</div>
+      <p class="review-text">"${r.text}"</p>
+      <div class="review-author">
+        <div class="review-avatar">${r.initials}</div>
+        <div><div class="review-name">${r.name}</div><div class="review-via">${r.via}</div></div>
+      </div>
+    </div>`).join('');
+  track.querySelectorAll('.review-card').forEach(el => io.observe(el));
+}
+
+loadReviews();
+</script>
+</body>
+</html>
