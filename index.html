@@ -416,16 +416,17 @@ section{position:relative;z-index:1}
   border:1px solid var(--border);border-radius:var(--radius);
   padding:36px;background:var(--carbon);
   transition:border-color var(--transition);
+  display:flex;flex-direction:column;
 }
 .review-card:hover{border-color:var(--border-gold)}
-.review-stars{display:flex;gap:3px;margin-bottom:20px}
+.review-stars{color:var(--gold);font-size:13px;letter-spacing:2px;margin-bottom:20px}
 .review-text{
   font-family:'Cormorant Garamond',serif;
   font-size:19px;font-weight:300;line-height:1.55;
   color:var(--text-primary);margin-bottom:24px;
-  font-style:italic;
+  font-style:italic;flex:1;
 }
-.review-author{display:flex;align-items:center;gap:12px}
+.review-author{display:flex;flex-direction:row;align-items:center;gap:12px}
 .review-avatar{
   width:36px;height:36px;border-radius:50%;
   background:var(--carbon-3);
@@ -434,8 +435,9 @@ section{position:relative;z-index:1}
   border:1px solid var(--border-gold);
   flex-shrink:0;
 }
-.review-name{font-size:13px;font-weight:400}
-.review-via{font-size:11px;color:var(--text-muted);letter-spacing:0.1em}
+.review-author-info{display:flex;flex-direction:column;gap:2px}
+.review-name{font-size:13px;font-weight:400;line-height:1.2}
+.review-via{font-size:11px;color:var(--text-muted);letter-spacing:0.1em;line-height:1.2}
 .rating-link{
   display:inline-block;margin-top:10px;
   font-size:10px;letter-spacing:0.16em;text-transform:uppercase;
@@ -852,7 +854,7 @@ footer{
       <div class="stat-label">Cars Protected</div>
     </div>
     <div class="stat-item">
-      <div class="stat-num">4.9</div>
+      <div class="stat-num">4.7</div>
       <div class="stat-label">Google Rating</div>
     </div>
   </div>
@@ -1013,7 +1015,7 @@ footer{
         <p class="review-text">"Very expert, professional, honest and friendly staff. It was really a great experience. My car was in terrible condition — you made it like new. Thank you so much!"</p>
         <div class="review-author">
           <div class="review-avatar">RI</div>
-          <div>
+          <div class="review-author-info">
             <div class="review-name">Reham Ismail</div>
             <div class="review-via">Google · a year ago</div>
           </div>
@@ -1025,7 +1027,7 @@ footer{
         <p class="review-text">"I rarely leave a comment or take any surveys but this place deserves 5+ stars and is highly recommended."</p>
         <div class="review-author">
           <div class="review-avatar">VA</div>
-          <div>
+          <div class="review-author-info">
             <div class="review-name">Viviane Adel</div>
             <div class="review-via">Google · 10 months ago</div>
           </div>
@@ -1037,7 +1039,7 @@ footer{
         <p class="review-text">"Great professional team with utmost care in every aspect of the detailing process."</p>
         <div class="review-author">
           <div class="review-avatar">MH</div>
-          <div>
+          <div class="review-author-info">
             <div class="review-name">M. Hosam Sabry</div>
             <div class="review-via">Google · Local Guide · 10 months ago</div>
           </div>
@@ -1164,7 +1166,7 @@ footer{
             </div>
             <div class="map-label">Galleria40 · Sheikh Zayed</div>
           </div>
-          <a href="https://www.google.com/maps/place/Detailing+Co./@30.0163444,30.998644,17z/data=!4m8!3m7!1s0x14585be90458d291:0xf00ee01b8703c919!8m2!3d30.0171382!4d31.0009366!9m1!1b1!16s%2Fg%2F11j2jdcf_d?entry=ttu&g_ep=EgoyMDI2MDUxMC4wIKXMDSoASAFQAw%3D%3D" target="_blank" class="map-open-btn">Open in Maps →</a>
+          <a href="https://www.google.com/maps/place/Detailing+Co./@30.0163444,30.998644,17z/data=!4m6!3m5!1s0x14585be90458d291:0xf00ee01b8703c919!8m2!3d30.0171382!4d31.0009366!16s%2Fg%2F11j2jdcf_d?entry=ttu&g_ep=EgoyMDI2MDUxMC4wIKXMDSoASAFQAw%3D%3D" target="_blank" class="map-open-btn">Open in Maps →</a>
         </div>
         <!-- Partner logos -->
         <div style="margin-top:24px;padding:20px 24px;border:1px solid var(--border);border-radius:var(--radius);display:flex;align-items:center;gap:24px;justify-content:center">
