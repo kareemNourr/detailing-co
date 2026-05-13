@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Paint Protection Film — Detailing Co.</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;font-size:16px}
+body{
+  background:#0a0a0a;color:#e8e4dc;
+  font-family:'DM Sans',sans-serif;font-weight:300;
+  line-height:1.65;overflow-x:hidden;cursor:none;
+}
+a{color:inherit;text-decoration:none}
+img{display:block;max-width:100%}
+button{font-family:inherit;cursor:none;border:none;background:none}
+
+:root{
+  --gold:#c9a96e;--gold-light:#e2c898;--gold-dim:#7a6040;
+  --carbon:#141414;--carbon-2:#1c1c1c;--carbon-3:#242424;--carbon-4:#2e2e2e;
+  --text-primary:#e8e4dc;--text-secondary:#8a8680;--text-muted:#4a4844;
+  --border:#2a2826;--border-gold:rgba(201,169,110,0.2);
+  --radius:2px;--transition:0.4s cubic-bezier(0.25,0.1,0.25,1);
+}
+
+/* ── CURSOR ── */
+#cursor{position:fixed;width:10px;height:10px;background:var(--gold);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:transform 0.15s ease,width 0.3s ease,height 0.3s ease}
+#cursor-ring{position:fixed;width:36px;height:36px;border:1px solid rgba(201,169,110,0.4);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:transform 0.35s cubic-bezier(0.25,0.1,0.25,1),width 0.3s ease,height 0.3s ease,opacity 0.3s ease}
+body.hovering #cursor{width:6px;height:6px}
+body.hovering #cursor-ring{width:50px;height:50px;opacity:0.6}
+
+/* ── NAV ── */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:24px 48px;
+  transition:background var(--transition),padding var(--transition),border-color var(--transition);
+  border-bottom:1px solid transparent;
+}
+nav.scrolled{background:rgba(10,10,10,0.92);backdrop-filter:blur(20px);padding:16px 48px;border-bottom-color:var(--border)}
+.nav-logo{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:300;letter-spacing:0.12em;text-transform:uppercase}
+.nav-logo span{color:var(--gold)}
+.nav-links{display:flex;gap:36px;align-items:center}
+.nav-links a{font-size:11px;letter-spacing:0.18em;text-transform:uppercase;color:var(--text-secondary);transition:color var(--transition);font-weight:400}
+.nav-links a:hover{color:var(--text-primary)}
+.nav-cta{background:var(--gold);color:#0a0a0a;padding:10px 24px;font-size:11px;letter-spacing:0.14em;text-transform:uppercase;font-weight:500;border-radius:var(--radius);transition:background var(--transition);display:inline-block}
+.nav-cta:hover{background:var(--gold-light)}
+
+/* ── HERO ── */
+#hero{
+  min-height:55vh;padding:160px 48px 80px;
+  display:flex;align-items:flex-end;
+  position:relative;overflow:hidden;
+  background:linear-gradient(135deg,#0a0a0a 0%,#0f0e0b 100%);
+}
+.hero-orb{position:absolute;width:600px;height:600px;background:radial-gradient(circle,rgba(201,169,110,0.07) 0%,transparent 65%);border-radius:50%;top:-100px;right:-50px;pointer-events:none}
+.hero-lines{position:absolute;inset:0;background-image:repeating-linear-gradient(-45deg,transparent,transparent 80px,rgba(201,169,110,0.015) 80px,rgba(201,169,110,0.015) 81px)}
+.hero-overlay{position:absolute;inset:0;background:linear-gradient(to top,#0a0a0a 0%,transparent 60%)}
+.hero-content{position:relative;z-index:2;max-width:700px}
+.hero-back{
+  display:inline-flex;align-items:center;gap:8px;
+  font-size:10px;letter-spacing:0.2em;text-transform:uppercase;
+  color:var(--text-muted);margin-bottom:32px;
+  transition:color var(--transition);
+}
+.hero-back:hover{color:var(--gold)}
+.hero-back svg{transition:transform 0.3s ease}
+.hero-back:hover svg{transform:translateX(-4px)}
+.hero-eyebrow{font-size:10px;letter-spacing:0.3em;text-transform:uppercase;color:var(--gold);margin-bottom:20px;display:flex;align-items:center;gap:14px}
+.hero-eyebrow::before{content:'';width:32px;height:1px;background:var(--gold)}
+.hero-h1{font-family:'Cormorant Garamond',serif;font-size:clamp(48px,6vw,80px);font-weight:300;line-height:1.0;letter-spacing:-0.02em;margin-bottom:24px}
+.hero-h1 em{font-style:italic;color:var(--gold)}
+.hero-sub{font-size:15px;color:var(--text-secondary);max-width:480px;line-height:1.75}
+
+/* ── WRAP ── */
+.wrap{max-width:1200px;margin:0 auto;padding:0 48px}
+
+/* ── SECTION LABEL ── */
+.section-label{font-size:10px;letter-spacing:0.28em;text-transform:uppercase;color:var(--gold);margin-bottom:16px;display:flex;align-items:center;gap:12px}
+.section-label::before{content:'';width:24px;height:1px;background:var(--gold)}
+
+/* ── WHY PPF ── */
+#why{padding:100px 0;border-top:1px solid var(--border)}
+.why-grid{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center}
+.why-title{font-family:'Cormorant Garamond',serif;font-size:clamp(36px,4vw,54px);font-weight:300;line-height:1.1;margin-bottom:24px}
+.why-title em{font-style:italic;color:var(--gold)}
+.why-desc{font-size:15px;color:var(--text-secondary);line-height:1.8;margin-bottom:36px}
+.why-points{display:flex;flex-direction:column;gap:16px}
+.why-point{display:flex;align-items:flex-start;gap:14px;font-size:14px;color:var(--text-secondary);line-height:1.6}
+.why-point::before{content:'';width:20px;height:1px;background:var(--gold);margin-top:10px;flex-shrink:0}
+.why-point strong{color:var(--text-primary);font-weight:400}
+.why-visual{
+  background:var(--carbon-2);border:1px solid var(--border);border-radius:var(--radius);
+  height:360px;display:flex;align-items:center;justify-content:center;
+  position:relative;overflow:hidden;
+}
+.why-visual-inner{text-align:center;color:var(--text-muted)}
+.why-visual-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(201,169,110,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(201,169,110,0.03) 1px,transparent 1px);background-size:40px 40px}
+.why-visual-text{font-family:'Cormorant Garamond',serif;font-size:80px;font-weight:300;color:var(--gold);opacity:0.08;position:absolute;bottom:-10px;right:20px;line-height:1;user-select:none}
+
+/* ── PRODUCTS ── */
+#products{padding:100px 0;border-top:1px solid var(--border)}
+.products-header{margin-bottom:64px}
+.products-header h2{font-family:'Cormorant Garamond',serif;font-size:clamp(36px,4vw,54px);font-weight:300;line-height:1.1}
+.products-header h2 em{font-style:italic;color:var(--gold)}
+
+/* Product tabs */
+.product-tabs{display:flex;gap:0;margin-bottom:48px;border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;width:fit-content}
+.product-tab{
+  padding:12px 28px;font-size:11px;letter-spacing:0.15em;text-transform:uppercase;
+  color:var(--text-muted);background:var(--carbon);
+  border-right:1px solid var(--border);
+  transition:all var(--transition);cursor:none;
+}
+.product-tab:last-child{border-right:none}
+.product-tab.active{background:var(--gold);color:#0a0a0a;font-weight:500}
+.product-tab:hover:not(.active){color:var(--text-primary);background:var(--carbon-2)}
+
+/* Product panels */
+.product-panel{display:none}
+.product-panel.active{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:start}
+
+.product-badge{
+  display:inline-flex;align-items:center;gap:8px;
+  font-size:9px;letter-spacing:0.2em;text-transform:uppercase;
+  padding:5px 12px;border:1px solid var(--border-gold);
+  color:var(--gold);border-radius:1px;margin-bottom:24px;
+}
+.product-badge.best{background:rgba(201,169,110,0.08)}
+.product-name{font-family:'Cormorant Garamond',serif;font-size:clamp(32px,4vw,48px);font-weight:300;line-height:1.05;margin-bottom:16px}
+.product-tagline{font-size:15px;color:var(--text-secondary);line-height:1.75;margin-bottom:36px}
+
+.product-specs{display:flex;flex-direction:column;gap:0;margin-bottom:36px;border:1px solid var(--border);border-radius:var(--radius);overflow:hidden}
+.spec-row{display:flex;justify-content:space-between;align-items:center;padding:14px 20px;border-bottom:1px solid var(--border)}
+.spec-row:last-child{border-bottom:none}
+.spec-label{font-size:11px;letter-spacing:0.15em;text-transform:uppercase;color:var(--text-muted)}
+.spec-value{font-size:13px;color:var(--text-primary);font-weight:400}
+.spec-value.highlight{color:var(--gold)}
+
+.product-features{list-style:none;display:flex;flex-direction:column;gap:12px;margin-bottom:36px}
+.product-features li{font-size:14px;color:var(--text-secondary);display:flex;align-items:flex-start;gap:12px;line-height:1.55}
+.product-features li::before{content:'';width:16px;height:1px;background:var(--gold);margin-top:10px;flex-shrink:0}
+.product-features li strong{color:var(--text-primary);font-weight:400}
+
+.product-cta{display:flex;gap:12px;align-items:center}
+.btn-primary{
+  background:var(--gold);color:#0a0a0a;padding:14px 32px;
+  font-size:11px;letter-spacing:0.15em;text-transform:uppercase;font-weight:500;
+  border-radius:var(--radius);display:inline-flex;align-items:center;gap:10px;
+  transition:background var(--transition),transform 0.2s ease;
+}
+.btn-primary:hover{background:var(--gold-light);transform:translateY(-1px)}
+.btn-ghost{
+  font-size:11px;letter-spacing:0.15em;text-transform:uppercase;
+  color:var(--text-muted);border:1px solid var(--border);
+  padding:14px 24px;border-radius:var(--radius);
+  transition:all var(--transition);
+}
+.btn-ghost:hover{border-color:var(--gold);color:var(--gold)}
+
+/* Product visual */
+.product-visual{
+  border:1px solid var(--border);border-radius:var(--radius);
+  height:400px;
+  position:relative;overflow:hidden;
+  background:var(--carbon-2);
+}
+.product-visual img{
+  position:absolute;inset:0;
+  width:100%;height:100%;
+  object-fit:cover;object-position:center;
+  display:block;
+}
+.product-visual-overlay{
+  position:absolute;inset:0;
+  background:linear-gradient(to top,rgba(10,10,10,0.7) 0%,transparent 50%);
+  z-index:1;
+}
+.product-visual-grid{display:none}
+.product-visual-label{
+  position:absolute;bottom:20px;left:20px;z-index:2;
+  font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:rgba(232,228,220,0.6);
+}
+.product-icon-large{display:none}
+.product-warranty-badge{
+  position:absolute;top:20px;right:20px;z-index:2;
+  background:rgba(10,10,10,0.75);border:1px solid var(--border-gold);
+  padding:10px 16px;border-radius:var(--radius);text-align:center;
+  backdrop-filter:blur(12px);
+}
+.warranty-num{font-family:'Cormorant Garamond',serif;font-size:28px;color:var(--gold);line-height:1}
+.warranty-label{font-size:9px;letter-spacing:0.15em;text-transform:uppercase;color:var(--text-muted);margin-top:2px}
+
+/* ── COMPARISON TABLE ── */
+#compare{padding:100px 0;border-top:1px solid var(--border)}
+.compare-header{margin-bottom:48px}
+.compare-header h2{font-family:'Cormorant Garamond',serif;font-size:clamp(32px,4vw,48px);font-weight:300;line-height:1.1}
+.compare-header h2 em{font-style:italic;color:var(--gold)}
+.compare-table{width:100%;border:1px solid var(--border);border-radius:var(--radius);overflow:hidden}
+.compare-table th,.compare-table td{padding:16px 24px;text-align:left;border-bottom:1px solid var(--border);font-weight:300}
+.compare-table tr:last-child td{border-bottom:none}
+.compare-table thead th{background:var(--carbon-2);font-size:11px;letter-spacing:0.18em;text-transform:uppercase;color:var(--text-muted)}
+.compare-table thead th:first-child{color:var(--text-muted)}
+.compare-table thead th.featured-col{color:var(--gold)}
+.compare-table tbody td{font-size:13px;color:var(--text-secondary);background:var(--carbon)}
+.compare-table tbody td:first-child{color:var(--text-primary);font-size:12px;letter-spacing:0.05em}
+.compare-table tbody tr:hover td{background:var(--carbon-2)}
+.compare-table .featured-col{border-left:1px solid var(--border-gold);border-right:1px solid var(--border-gold)}
+.check{color:var(--gold);font-size:14px}
+.dash{color:var(--text-muted);font-size:16px}
+
+/* ── COVERAGE ── */
+#coverage{padding:100px 0;border-top:1px solid var(--border)}
+.coverage-header{margin-bottom:48px}
+.coverage-header h2{font-family:'Cormorant Garamond',serif;font-size:clamp(32px,4vw,48px);font-weight:300;line-height:1.1}
+.coverage-header h2 em{font-style:italic;color:var(--gold)}
+.coverage-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--border);border:1px solid var(--border)}
+.coverage-card{background:var(--carbon);padding:32px 28px;position:relative;transition:background var(--transition)}
+.coverage-card:hover{background:var(--carbon-2)}
+.coverage-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--gold),transparent);opacity:0;transition:opacity var(--transition)}
+.coverage-card:hover::before{opacity:1}
+.coverage-icon{font-size:28px;margin-bottom:16px;opacity:0.6}
+.coverage-name{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:300;margin-bottom:8px}
+.coverage-desc{font-size:12px;color:var(--text-muted);line-height:1.6}
+
+/* ── CTA BAND ── */
+#cta-band{
+  padding:80px 0;border-top:1px solid var(--border);
+  background:linear-gradient(135deg,var(--carbon) 0%,#0f0e0b 100%);
+  text-align:center;
+}
+#cta-band h2{font-family:'Cormorant Garamond',serif;font-size:clamp(36px,5vw,60px);font-weight:300;margin-bottom:16px}
+#cta-band h2 em{font-style:italic;color:var(--gold)}
+#cta-band p{font-size:15px;color:var(--text-secondary);margin-bottom:40px}
+.cta-actions{display:flex;gap:16px;justify-content:center;align-items:center}
+
+/* ── FOOTER ── */
+footer{border-top:1px solid var(--border);padding:36px 0}
+.footer-bottom{display:flex;justify-content:space-between;align-items:center;font-size:11px;color:var(--text-muted);letter-spacing:0.06em}
+
+/* ── REVEAL ── */
+.reveal{opacity:0;transform:translateY(28px);transition:opacity 0.8s ease,transform 0.8s ease}
+.reveal.visible{opacity:1;transform:translateY(0)}
+.reveal-delay-1{transition-delay:0.1s}
+.reveal-delay-2{transition-delay:0.2s}
+.reveal-delay-3{transition-delay:0.3s}
+
+/* ── MOBILE ── */
+@media(max-width:900px){
+  nav{padding:20px 24px}
+  nav.scrolled{padding:14px 24px}
+  .nav-links{display:none}
+  #hero{padding:120px 24px 60px}
+  .wrap{padding:0 24px}
+  .why-grid,.product-panel.active{grid-template-columns:1fr}
+  .coverage-grid{grid-template-columns:1fr 1fr}
+  .compare-table{font-size:12px}
+  .compare-table th,.compare-table td{padding:12px 14px}
+  body{cursor:auto}
+  #cursor,#cursor-ring{display:none}
+}
+
+/* WhatsApp */
+.wa-float{position:fixed;bottom:32px;right:32px;z-index:150;width:52px;height:52px;border-radius:50%;background:#25D366;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 24px rgba(37,211,102,0.3);transition:transform 0.3s ease}
+.wa-float:hover{transform:scale(1.1)}
+.wa-float svg{width:26px;height:26px;fill:#fff}
+</style>
+</head>
+<body>
+
+<div id="cursor"></div>
+<div id="cursor-ring"></div>
+
+<a href="https://wa.me/201050050020" target="_blank" class="wa-float" aria-label="WhatsApp">
+  <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.108.547 4.1 1.504 5.836L.057 23.7a.5.5 0 00.617.633l5.994-1.42A11.936 11.936 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.9a9.9 9.9 0 01-5.031-1.376l-.358-.214-3.719.88.936-3.618-.234-.372A9.86 9.86 0 012.1 12C2.1 6.532 6.532 2.1 12 2.1 17.468 2.1 21.9 6.532 21.9 12c0 5.468-4.432 9.9-9.9 9.9z"/></svg>
+</a>
+
+<!-- NAV -->
+<nav id="nav">
+  <a href="index.html" class="nav-logo">Detailing <span>Co.</span></a>
+  <div class="nav-links">
+    <a href="index.html#services">Services</a>
+    <a href="index.html#pricing">Pricing</a>
+    <a href="index.html#reviews">Reviews</a>
+    <a href="index.html#gallery">Gallery</a>
+    <a href="index.html#visit">Visit</a>
+    <a href="index.html" class="nav-cta" id="book-btn">Book Now</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-orb"></div>
+  <div class="hero-lines"></div>
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <a href="index.html#services" class="hero-back">
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M11 7H3M6 4L3 7l3 3" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      Back to Services
+    </a>
+    <div class="hero-eyebrow">SunTek Official Partner</div>
+    <h1 class="hero-h1">Paint Protection<br><em>Film</em></h1>
+    <p class="hero-sub">An invisible shield between your paint and everything the road throws at it. Self-healing, hydrophobic, and warrantied for up to 12 years.</p>
+  </div>
+</section>
+
+<!-- WHY PPF -->
+<section id="why">
+  <div class="wrap">
+    <div class="why-grid">
+      <div class="reveal">
+        <div class="section-label">Why PPF</div>
+        <h2 class="why-title">Your paint,<br><em>permanently protected</em></h2>
+        <p class="why-desc">Paint correction and ceramic coating treat your paint after damage occurs. PPF prevents the damage from happening in the first place — an invisible armour that takes the hit so your paint doesn't have to.</p>
+        <div class="why-points">
+          <div class="why-point"><strong>Self-healing technology</strong> — minor scratches disappear with heat</div>
+          <div class="why-point"><strong>Rock chip defence</strong> — absorbs impact that would otherwise chip clear coat</div>
+          <div class="why-point"><strong>Hydrophobic surface</strong> — water, tar, and insects sheet off cleanly</div>
+          <div class="why-point"><strong>UV protection</strong> — prevents paint fade and oxidation over years</div>
+          <div class="why-point"><strong>Preserves resale value</strong> — factory paint condition commands a premium</div>
+        </div>
+      </div>
+      <div class="why-visual reveal reveal-delay-1">
+        <video src="ppf.mp4" autoplay loop muted playsinline></video>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRODUCTS -->
+<section id="products">
+  <div class="wrap">
+    <div class="products-header reveal">
+      <div class="section-label">SunTek Films</div>
+      <h2>Choose your<br><em>level of protection</em></h2>
+    </div>
+
+    <!-- Tabs -->
+    <div class="product-tabs reveal">
+      <button class="product-tab active" onclick="switchTab(0)">Reaction</button>
+      <button class="product-tab" onclick="switchTab(1)">PPF Ultra</button>
+      <button class="product-tab" onclick="switchTab(2)">Ultra Matte</button>
+    </div>
+
+    <!-- Panel 1: Reaction -->
+    <div class="product-panel active" id="panel-0">
+      <div class="reveal">
+        <div class="product-badge best">★ &nbsp;Flagship Product</div>
+        <h2 class="product-name">SunTek® Reaction</h2>
+        <p class="product-tagline">The pinnacle of paint protection. Reaction combines a 2-in-1 ceramic coating layer with the industry's most advanced PPF — giving you both protection and gloss in a single film.</p>
+        <div class="product-specs">
+          <div class="spec-row"><span class="spec-label">Warranty</span><span class="spec-value highlight">12 Years</span></div>
+          <div class="spec-row"><span class="spec-label">Technology</span><span class="spec-value">Ceramic + PPF Hybrid</span></div>
+          <div class="spec-row"><span class="spec-label">Self-healing</span><span class="spec-value">✓ Advanced</span></div>
+          <div class="spec-row"><span class="spec-label">Hydrophobic</span><span class="spec-value">Tetrashield™ Top Coat</span></div>
+          <div class="spec-row"><span class="spec-label">Origin</span><span class="spec-value">Made in USA</span></div>
+        </div>
+        <ul class="product-features">
+          <li><strong>2-in-1 ceramic coating properties</strong> built into the film — no separate coating needed</li>
+          <li><strong>Tetrashield™ technology</strong> for super hydrophobic properties — stays clean longer</li>
+          <li><strong>Deep shine and unparalleled clarity</strong> with zero orange peel finish</li>
+          <li><strong>Superior self-healing</strong> — scratches vanish with ambient heat</li>
+          <li><strong>Ultra defence</strong> against rock chips, road debris, and environmental hazards</li>
+        </ul>
+        <div class="product-cta">
+          <a href="index.html" class="btn-primary" onclick="sessionStorage.setItem('openModal','1')">
+            Get a Quote
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7h10M8 4l3 3-3 3" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
+          <a href="https://wa.me/201050050020" target="_blank" class="btn-ghost">Ask on WhatsApp</a>
+        </div>
+      </div>
+      <div class="product-visual reveal reveal-delay-1">
+        <img src="https://images.pexels.com/photos/3311574/pexels-photo-3311574.jpeg?auto=compress&cs=tinysrgb&w=1200" alt="SunTek Reaction PPF"/>
+        <div class="product-visual-overlay"></div>
+        <div class="product-warranty-badge">
+          <div class="warranty-num">12</div>
+          <div class="warranty-label">Year Warranty</div>
+        </div>
+        <div class="product-visual-label">SunTek® Reaction</div>
+      </div>
+    </div>
+
+    <!-- Panel 2: PPF Ultra -->
+    <div class="product-panel" id="panel-1">
+      <div class="reveal">
+        <div class="product-badge">High Gloss Film</div>
+        <h2 class="product-name">SunTek® PPF Ultra</h2>
+        <p class="product-tagline">Exceptional gloss and proven protection. PPF Ultra delivers extremely high clarity with HydroResist™ top coat and self-healing technology — the trusted choice for daily drivers and weekend cars alike.</p>
+        <div class="product-specs">
+          <div class="spec-row"><span class="spec-label">Warranty</span><span class="spec-value highlight">10 Years</span></div>
+          <div class="spec-row"><span class="spec-label">Finish</span><span class="spec-value">Extremely High Gloss</span></div>
+          <div class="spec-row"><span class="spec-label">Self-healing</span><span class="spec-value">✓ Standard</span></div>
+          <div class="spec-row"><span class="spec-label">Hydrophobic</span><span class="spec-value">HydroResist™ Top Coat</span></div>
+          <div class="spec-row"><span class="spec-label">Origin</span><span class="spec-value">Made in USA</span></div>
+        </div>
+        <ul class="product-features">
+          <li><strong>Extremely high gloss</strong> — enhances paint depth and clarity</li>
+          <li><strong>HydroResist™ top coat</strong> repels water, dirt, and stains</li>
+          <li><strong>Self-healing technology</strong> — light scratches disappear with heat</li>
+          <li><strong>Highly durable</strong> — stays flawless against rock chips, road debris, and insects</li>
+          <li><strong>10-year manufacturer warranty</strong> for total peace of mind</li>
+        </ul>
+        <div class="product-cta">
+          <a href="index.html" class="btn-primary" onclick="sessionStorage.setItem('openModal','1')">
+            Get a Quote
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7h10M8 4l3 3-3 3" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
+          <a href="https://wa.me/201050050020" target="_blank" class="btn-ghost">Ask on WhatsApp</a>
+        </div>
+      </div>
+      <div class="product-visual reveal reveal-delay-1">
+        <img src="https://images.pexels.com/photos/1402787/pexels-photo-1402787.jpeg?auto=compress&cs=tinysrgb&w=1200" alt="SunTek PPF Ultra"/>
+        <div class="product-visual-overlay"></div>
+        <div class="product-warranty-badge">
+          <div class="warranty-num">10</div>
+          <div class="warranty-label">Year Warranty</div>
+        </div>
+        <div class="product-visual-label">SunTek® PPF Ultra</div>
+      </div>
+    </div>
+
+    <!-- Panel 3: Ultra Matte -->
+    <div class="product-panel" id="panel-2">
+      <div class="reveal">
+        <div class="product-badge">Matte Finish</div>
+        <h2 class="product-name">SunTek® Ultra Matte</h2>
+        <p class="product-tagline">Protection with a bold, satin finish. Ultra Matte transforms the look of your car while providing the same rock-solid protection as our gloss films. Perfect for matte factory paint or converting gloss to matte.</p>
+        <div class="product-specs">
+          <div class="spec-row"><span class="spec-label">Warranty</span><span class="spec-value highlight">10 Years</span></div>
+          <div class="spec-row"><span class="spec-label">Finish</span><span class="spec-value">Bold Satin Matte</span></div>
+          <div class="spec-row"><span class="spec-label">Self-healing</span><span class="spec-value">✓ Standard</span></div>
+          <div class="spec-row"><span class="spec-label">Hydrophobic</span><span class="spec-value">HydroResist™ Top Coat</span></div>
+          <div class="spec-row"><span class="spec-label">Origin</span><span class="spec-value">Made in USA</span></div>
+        </div>
+        <ul class="product-features">
+          <li><strong>Bold satin matte finish</strong> — convert gloss to matte or protect factory matte paint</li>
+          <li><strong>HydroResist™ top coat</strong> repels water, dirt, and stains</li>
+          <li><strong>Self-healing technology</strong> — maintains the matte finish over time</li>
+          <li><strong>Highly durable</strong> — stays flawless against rock chips, road debris, and insects</li>
+          <li><strong>10-year manufacturer warranty</strong> for total peace of mind</li>
+        </ul>
+        <div class="product-cta">
+          <a href="index.html" class="btn-primary" onclick="sessionStorage.setItem('openModal','1')">
+            Get a Quote
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7h10M8 4l3 3-3 3" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
+          <a href="https://wa.me/201050050020" target="_blank" class="btn-ghost">Ask on WhatsApp</a>
+        </div>
+      </div>
+      <div class="product-visual reveal reveal-delay-1">
+        <img src="https://images.pexels.com/photos/3802510/pexels-photo-3802510.jpeg?auto=compress&cs=tinysrgb&w=1200" alt="SunTek Ultra Matte"/>
+        <div class="product-visual-overlay"></div>
+        <div class="product-warranty-badge">
+          <div class="warranty-num">10</div>
+          <div class="warranty-label">Year Warranty</div>
+        </div>
+        <div class="product-visual-label">SunTek® Ultra Matte</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- COMPARISON TABLE -->
+<section id="compare">
+  <div class="wrap">
+    <div class="compare-header reveal">
+      <div class="section-label">Side by Side</div>
+      <h2>Compare <em>all three films</em></h2>
+    </div>
+    <div class="reveal">
+      <table class="compare-table">
+        <thead>
+          <tr>
+            <th>Feature</th>
+            <th class="featured-col">Reaction ★</th>
+            <th>PPF Ultra</th>
+            <th>Ultra Matte</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Warranty</td>
+            <td class="featured-col" style="color:var(--gold)">12 Years</td>
+            <td>10 Years</td>
+            <td>10 Years</td>
+          </tr>
+          <tr>
+            <td>Self-healing</td>
+            <td class="featured-col"><span class="check">✓</span> Advanced</td>
+            <td><span class="check">✓</span></td>
+            <td><span class="check">✓</span></td>
+          </tr>
+          <tr>
+            <td>Ceramic top coat built-in</td>
+            <td class="featured-col"><span class="check">✓</span></td>
+            <td><span class="dash">—</span></td>
+            <td><span class="dash">—</span></td>
+          </tr>
+          <tr>
+            <td>HydroResist™ coating</td>
+            <td class="featured-col"><span class="check">✓</span> Tetrashield™</td>
+            <td><span class="check">✓</span></td>
+            <td><span class="check">✓</span></td>
+          </tr>
+          <tr>
+            <td>Finish</td>
+            <td class="featured-col">Ultra Gloss</td>
+            <td>High Gloss</td>
+            <td>Satin Matte</td>
+          </tr>
+          <tr>
+            <td>Rock chip defence</td>
+            <td class="featured-col"><span class="check">✓</span></td>
+            <td><span class="check">✓</span></td>
+            <td><span class="check">✓</span></td>
+          </tr>
+          <tr>
+            <td>UV protection</td>
+            <td class="featured-col"><span class="check">✓</span></td>
+            <td><span class="check">✓</span></td>
+            <td><span class="check">✓</span></td>
+          </tr>
+          <tr>
+            <td>Made in USA</td>
+            <td class="featured-col"><span class="check">✓</span></td>
+            <td><span class="check">✓</span></td>
+            <td><span class="check">✓</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- COVERAGE OPTIONS -->
+<section id="coverage">
+  <div class="wrap">
+    <div class="coverage-header reveal">
+      <div class="section-label">Coverage Zones</div>
+      <h2>Protect <em>as much as you need</em></h2>
+    </div>
+    <div class="coverage-grid reveal">
+      <div class="coverage-card">
+        <div class="coverage-icon">◈</div>
+        <div class="coverage-name">Front Package</div>
+        <div class="coverage-desc">Hood, front bumper, fenders, mirrors, and headlights. Covers 90% of high-impact zones.</div>
+      </div>
+      <div class="coverage-card">
+        <div class="coverage-icon">◈</div>
+        <div class="coverage-name">Partial Coverage</div>
+        <div class="coverage-desc">Front package plus door edges, door cups, and rocker panels. Ideal for daily drivers.</div>
+      </div>
+      <div class="coverage-card">
+        <div class="coverage-icon">◈</div>
+        <div class="coverage-name">Full Body</div>
+        <div class="coverage-desc">Every painted panel, top to bottom. Maximum protection for collectibles and performance cars.</div>
+      </div>
+      <div class="coverage-card">
+        <div class="coverage-icon">◈</div>
+        <div class="coverage-name">Custom Zones</div>
+        <div class="coverage-desc">Specific areas like the roof, trunk lid, A-pillars, or door sills. Quoted individually.</div>
+      </div>
+    </div>
+    <p style="margin-top:20px;font-size:12px;color:var(--text-muted);text-align:center;letter-spacing:0.05em">All pricing is custom — based on vehicle size, model, and coverage zone. <a href="https://wa.me/201050050020" style="color:var(--gold-dim);text-decoration:underline;text-underline-offset:3px">Request a quote on WhatsApp →</a></p>
+  </div>
+</section>
+
+<!-- CTA BAND -->
+<section id="cta-band">
+  <div class="wrap">
+    <h2 class="reveal">Ready to protect<br><em>your investment?</em></h2>
+    <p class="reveal">Visit our studio in Galleria40, Sheikh Zayed — we'll assess your vehicle and recommend the right film and coverage.</p>
+    <div class="cta-actions reveal">
+      <a href="index.html" class="btn-primary" onclick="sessionStorage.setItem('openModal','1')">
+        Book a Consultation
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7h10M8 4l3 3-3 3" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+      <a href="https://wa.me/201050050020" target="_blank" class="btn-ghost">WhatsApp Us</a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="wrap">
+    <div class="footer-bottom">
+      <span>© 2025 Detailing Co. — All rights reserved.</span>
+      <span style="color:var(--gold-dim);font-size:10px;letter-spacing:0.15em;text-transform:uppercase">SunTek Official Partner</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+/* Cursor */
+const cursor=document.getElementById('cursor'),ring=document.getElementById('cursor-ring');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cursor.style.left=mx+'px';cursor.style.top=my+'px'});
+(function animRing(){rx+=(mx-rx)*0.12;ry+=(my-ry)*0.12;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(animRing)})();
+document.querySelectorAll('a,button,.coverage-card').forEach(el=>{el.addEventListener('mouseenter',()=>document.body.classList.add('hovering'));el.addEventListener('mouseleave',()=>document.body.classList.remove('hovering'))});
+
+/* Nav scroll */
+const nav=document.getElementById('nav');
+window.addEventListener('scroll',()=>nav.classList.toggle('scrolled',scrollY>60));
+
+/* Reveal */
+const reveals=document.querySelectorAll('.reveal');
+const io=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');io.unobserve(e.target)}})},{threshold:0.1});
+reveals.forEach(r=>io.observe(r));
+
+/* Product tabs */
+function switchTab(idx){
+  document.querySelectorAll('.product-tab').forEach((t,i)=>t.classList.toggle('active',i===idx));
+  document.querySelectorAll('.product-panel').forEach((p,i)=>p.classList.toggle('active',i===idx));
+}
+
+/* Open booking modal on return to index if flagged */
+window.addEventListener('load',()=>{
+  if(sessionStorage.getItem('openModal')==='1'){
+    sessionStorage.removeItem('openModal');
+    // index.html handles this via its own script
+  }
+});
+</script>
+</body>
+</html>
